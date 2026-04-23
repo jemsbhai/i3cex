@@ -1,0 +1,153 @@
+name: CI
+
+# Trigger on every push and pull request to main. Scheduled weekly run
+# catches dependency drift early (e.g., a new ruff release that tightens
+# rules).
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "0 6 * * 1"  # Mondays 06:00 UTC.
+  workflow_dispatch:
+
+# Cancel superseded runs on the same branch to save CI minutes.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# Minimal permissions by default; individual jobs request more as needed.
+permissions:
+  contents: read
+
+jobs:
+  # --------------------------------------------------------------------
+  # Lint and type-check once, on Linux + Python 3.12. No matrix: these
+  # are deterministic and running them on every matrix entry wastes
+  # minutes.
+  # --------------------------------------------------------------------
+  quality:
+    name: Lint and type-check
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install Hatch
+        run: pipx install hatch
+
+      - name: Check formatting
+        run: hatch run lint
+
+      - name: Type-check
+        run: hatch run typecheck
+
+  # --------------------------------------------------------------------
+  # Unit + property + integration tests across OS and Python matrix.
+  # Cosim is deliberately excluded; it runs in a separate job on Linux.
+  # --------------------------------------------------------------------
+  test:
+    name: Test (${{ matrix.os }}, Python ${{ matrix.python-version }})
+    needs: quality
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ["3.11", "3.12", "3.13"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install Hatch
+        run: pipx install hatch
+
+      - name: Run tests with coverage
+        run: hatch run cov
+
+      - name: Upload coverage to Codecov
+        # Only upload once per matrix combo; coverage is OS-independent
+        # but we pick Linux + latest Python as canonical.
+        if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.12'
+        uses: codecov/codecov-action@v5
+        with:
+          files: ./coverage.xml
+          fail_ci_if_error: false
+          verbose: true
+        continue-on-error: true  # Codecov outages should not fail CI.
+
+  # --------------------------------------------------------------------
+  # Cosim: cocotb against chipsalliance/i3c-core. Linux only. Gated.
+  # This job is currently a placeholder that skips; it will be
+  # activated once the cosim harness is wired up.
+  # --------------------------------------------------------------------
+  cosim:
+    name: RTL cosimulation (placeholder)
+    needs: quality
+    runs-on: ubuntu-latest
+    if: false  # TODO: enable when tests/cosim/ has real testbenches.
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"  # chipsalliance/i3c-core recommends 3.11.
+          cache: pip
+
+      - name: Install Verilator
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y verilator iverilog
+
+      - name: Install Hatch
+        run: pipx install hatch
+
+      - name: Run cosim tests
+        run: hatch run cosim:run
+
+  # --------------------------------------------------------------------
+  # Build sdist and wheel; smoke-test that both install cleanly. Does
+  # not publish.
+  # --------------------------------------------------------------------
+  build:
+    name: Build distribution
+    needs: [quality, test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Hatch
+        run: pipx install hatch
+
+      - name: Build sdist and wheel
+        run: hatch build
+
+      - name: Upload artefacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-${{ github.sha }}
+          path: dist/
+          retention-days: 14

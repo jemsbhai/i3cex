@@ -1,0 +1,296 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "i3cex"
+dynamic = ["version"]
+description = "I3C-EX: Extension layers for MIPI I3C targeting edge AI and edge ML workloads."
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.11"
+authors = [
+    { name = "Muntaser Syed" },
+]
+keywords = [
+    "i3c",
+    "mipi",
+    "embedded",
+    "serial-bus",
+    "edge-ai",
+    "edge-ml",
+    "sensor-fusion",
+    "protocol",
+]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering",
+    "Topic :: System :: Hardware",
+    "Typing :: Typed",
+]
+dependencies = []
+
+[project.optional-dependencies]
+sim = [
+    # Pure-Python behavioural simulator has no external dependencies
+    # beyond the standard library today. Reserved for future use.
+]
+cosim = [
+    # cocotb-based cosimulation against chipsalliance/i3c-core RTL.
+    # Linux/WSL2 only. Install via: pip install i3cex[cosim]
+    "cocotb>=1.9.0",
+    "cocotb-test>=0.2.4",
+]
+dev = [
+    "pytest>=8.3",
+    "pytest-cov>=6.0",
+    "pytest-xdist>=3.6",
+    "hypothesis>=6.120",
+    "ruff>=0.8",
+    "mypy>=1.13",
+    "pre-commit>=4.0",
+]
+docs = [
+    "mkdocs>=1.6",
+    "mkdocs-material>=9.5",
+    "mkdocstrings[python]>=0.27",
+]
+
+[project.urls]
+Repository = "https://github.com/USER/i3cex"  # TODO: update when published
+Specification = "https://github.com/USER/i3cex/tree/main/../specs"
+Issues = "https://github.com/USER/i3cex/issues"
+Changelog = "https://github.com/USER/i3cex/blob/main/CHANGELOG.md"
+
+[tool.hatch.version]
+path = "src/i3cex/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/i3cex"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "src/i3cex",
+    "tests",
+    "scripts",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md",
+    "pyproject.toml",
+]
+
+# ---------------------------------------------------------------------------
+# Hatch environments
+# ---------------------------------------------------------------------------
+# Hatch passes scripts through the platform shell. On Windows that shell
+# is PowerShell, which handles quoted arguments with internal spaces
+# (e.g. -m "unit or property") differently from POSIX shells. We
+# delegate invocation to ``scripts/run_pytest.py``, which constructs
+# argv programmatically and bypasses shell quoting entirely.
+
+[tool.hatch.envs.default]
+features = ["dev"]
+
+[tool.hatch.envs.default.scripts]
+# Run the fast test layers only (unit + property).
+test = "python scripts/run_pytest.py --markers \"unit or property\" {args}"
+
+# Run every test layer that does not require RTL cosim.
+test-all = "python scripts/run_pytest.py --markers \"not cosim\" {args}"
+
+# Run the full non-cosim suite with coverage reports.
+cov = "python scripts/run_pytest.py --markers \"not cosim\" --cov-report=term-missing --cov-report=html {args}"
+
+# Lint only (no auto-fix).
+lint = [
+    "ruff check src tests scripts",
+    "ruff format --check src tests scripts",
+]
+
+# Lint with auto-fix.
+fix = [
+    "ruff format src tests scripts",
+    "ruff check --fix src tests scripts",
+]
+
+# Strict type checking.
+typecheck = "mypy --strict src tests scripts"
+
+# Everything: lint + typecheck + full non-cosim test run with coverage.
+check = [
+    "ruff check src tests scripts",
+    "ruff format --check src tests scripts",
+    "mypy --strict src tests scripts",
+    "python scripts/run_pytest.py --markers \"not cosim\" --cov-report=term-missing",
+]
+
+# Cosim environment: Linux/WSL2 only. Requires Verilator, Icarus, Verible.
+[tool.hatch.envs.cosim]
+features = ["dev", "cosim"]
+platforms = ["linux"]
+
+[tool.hatch.envs.cosim.scripts]
+run = "python scripts/run_pytest.py --markers cosim {args}"
+
+# Docs environment.
+[tool.hatch.envs.docs]
+features = ["dev", "docs"]
+
+[tool.hatch.envs.docs.scripts]
+build = "mkdocs build {args}"
+serve = "mkdocs serve {args}"
+
+# ---------------------------------------------------------------------------
+# pytest
+# ---------------------------------------------------------------------------
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+addopts = [
+    "-ra",
+    "--strict-markers",
+    "--strict-config",
+    "--cov=i3cex",
+    "--cov-branch",
+    "--cov-report=term-missing",
+    "--cov-report=xml",
+    # Coverage floor. This is intentionally lower than the 95% target in
+    # GOVERNANCE.md because several sublayer packages are stubs with no
+    # tests yet. As each sublayer is implemented, its coverage is
+    # enforced per-file via tests, and this floor will be ratcheted up.
+    "--cov-fail-under=60",
+]
+markers = [
+    "unit: Pure-function unit tests (no I/O, fast).",
+    "property: Hypothesis-based generative tests.",
+    "integration: Multi-component integration tests using pure-Python simulator.",
+    "cosim: cocotb cosimulation tests against RTL (Linux/WSL2 only).",
+    "slow: Tests that take more than one second to run.",
+]
+filterwarnings = [
+    "error",
+]
+
+# ---------------------------------------------------------------------------
+# coverage
+# ---------------------------------------------------------------------------
+[tool.coverage.run]
+source = ["src/i3cex"]
+branch = true
+parallel = true
+
+[tool.coverage.paths]
+source = ["src/i3cex", "*/site-packages/i3cex"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = false
+exclude_also = [
+    "raise NotImplementedError",
+    "if TYPE_CHECKING:",
+    "if __name__ == .__main__.:",
+    "\\.\\.\\.",
+    "pass",
+]
+
+# ---------------------------------------------------------------------------
+# ruff
+# ---------------------------------------------------------------------------
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests", "scripts"]
+
+[tool.ruff.lint]
+select = [
+    "E",      # pycodestyle errors
+    "W",      # pycodestyle warnings
+    "F",      # pyflakes
+    "I",      # isort
+    "B",      # flake8-bugbear
+    "C4",     # flake8-comprehensions
+    "UP",     # pyupgrade
+    "N",      # pep8-naming
+    "D",      # pydocstyle
+    "S",      # flake8-bandit
+    "A",      # flake8-builtins
+    "ARG",    # flake8-unused-arguments
+    "C90",    # mccabe complexity
+    "PL",     # pylint
+    "PT",     # flake8-pytest-style
+    "RET",    # flake8-return
+    "SIM",    # flake8-simplify
+    "TCH",    # flake8-type-checking
+    "TID",    # flake8-tidy-imports
+    "ERA",    # eradicate (commented-out code)
+    "RUF",    # ruff-specific rules
+]
+ignore = [
+    "D203",    # 1 blank line required before class docstring (conflicts with D211)
+    "D213",    # Multi-line docstring summary should start at second line (conflicts with D212)
+    "PLR0913", # Too many arguments in function definition
+    "PLC0415", # `import` should be at the top-level of a file.
+               # We legitimately need local imports for tests that verify
+               # package import succeeds, and for lazy-import patterns
+               # that avoid circular dependencies. This rule is noisy and
+               # fights legitimate patterns; disabled project-wide.
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = [
+    "D",       # docstrings not required in tests
+    "S101",    # assert is expected in tests
+    "PLR2004", # magic numbers are fine in tests
+    "ARG001",  # fixtures often look like unused args
+]
+"scripts/**/*.py" = [
+    "S603",    # subprocess call: check for execution of untrusted input.
+               # We invoke sys.executable with constructed argv; safe by design.
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+docstring-code-format = true
+
+# ---------------------------------------------------------------------------
+# mypy
+# ---------------------------------------------------------------------------
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_unreachable = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+disallow_any_unimported = true
+disallow_any_generics = true
+disallow_subclassing_any = true
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+strict_optional = true
+pretty = true
+show_error_codes = true
+show_column_numbers = true
+files = ["src/i3cex", "tests", "scripts"]
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false  # Test functions often omit return type annotations.

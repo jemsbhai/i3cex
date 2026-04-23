@@ -1,0 +1,60 @@
+# Pre-commit configuration for the i3cex package.
+#
+# Run manually:      pre-commit run --all-files
+# Install hooks:     pre-commit install
+#
+# Hooks run in order. If any fail, the commit is blocked.
+
+repos:
+  # --------------------------------------------------------------------
+  # General hygiene
+  # --------------------------------------------------------------------
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-json
+      - id: check-added-large-files
+        args: ["--maxkb=500"]
+      - id: check-merge-conflict
+      - id: check-case-conflict
+      - id: mixed-line-ending
+        args: ["--fix=lf"]
+      - id: debug-statements
+
+  # --------------------------------------------------------------------
+  # Ruff: formatter + linter
+  # --------------------------------------------------------------------
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.8.4
+    hooks:
+      - id: ruff-format
+      - id: ruff
+        args: ["--fix", "--exit-non-zero-on-fix"]
+
+  # --------------------------------------------------------------------
+  # mypy: strict type checking
+  # --------------------------------------------------------------------
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.13.0
+    hooks:
+      - id: mypy
+        args: ["--strict", "--config-file=pyproject.toml"]
+        additional_dependencies:
+          - hypothesis
+          - pytest
+
+  # --------------------------------------------------------------------
+  # Conventional commits
+  # --------------------------------------------------------------------
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v3.6.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+        args:
+          - --types
+          - feat,fix,docs,test,refactor,perf,chore,ci,build,revert,spec
