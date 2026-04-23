@@ -165,8 +165,12 @@ addopts = [
     # Coverage floor. This is intentionally lower than the 95% target in
     # GOVERNANCE.md because several sublayer packages are stubs with no
     # tests yet. As each sublayer is implemented, its coverage is
-    # enforced per-file via tests, and this floor will be ratcheted up.
-    "--cov-fail-under=60",
+    # enforced per-file via tests, and this floor is ratcheted up.
+    #
+    # Ratchet history:
+    #   60 -> initial scaffold (no real code yet).
+    #   80 -> 2026-04-23: preamble.py at 100%, overall at 82%.
+    "--cov-fail-under=80",
 ]
 markers = [
     "unit: Pure-function unit tests (no I/O, fast).",
