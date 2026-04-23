@@ -1,13 +1,23 @@
 name: CI
 
-# Trigger on every push and pull request to main. Scheduled weekly run
-# catches dependency drift early (e.g., a new ruff release that tightens
-# rules).
+# Triggers:
+#   - push and pull_request targeting main, but only when files under
+#     the i3cex/ package or this workflow itself change. Pure-docs and
+#     spec-only changes do not consume CI minutes.
+#   - scheduled weekly run to catch dependency drift (e.g. a new ruff
+#     release that tightens rules).
+#   - workflow_dispatch for manual runs.
 on:
   push:
     branches: [main]
+    paths:
+      - "i3cex/**"
+      - ".github/workflows/ci.yml"
   pull_request:
     branches: [main]
+    paths:
+      - "i3cex/**"
+      - ".github/workflows/ci.yml"
   schedule:
     - cron: "0 6 * * 1"  # Mondays 06:00 UTC.
   workflow_dispatch:
@@ -21,6 +31,13 @@ concurrency:
 permissions:
   contents: read
 
+# All jobs below operate on the i3cex/ subfolder by default. Checkout
+# always runs from the repo root (that is how actions/checkout works),
+# but every subsequent `run:` step starts inside i3cex/.
+defaults:
+  run:
+    working-directory: ./i3cex
+
 jobs:
   # --------------------------------------------------------------------
   # Lint and type-check once, on Linux + Python 3.12. No matrix: these
@@ -30,9 +47,6 @@ jobs:
   quality:
     name: Lint and type-check
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: .
     steps:
       - uses: actions/checkout@v4
 
@@ -45,7 +59,7 @@ jobs:
       - name: Install Hatch
         run: pipx install hatch
 
-      - name: Check formatting
+      - name: Check formatting and linting
         run: hatch run lint
 
       - name: Type-check
@@ -86,7 +100,7 @@ jobs:
         if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.12'
         uses: codecov/codecov-action@v5
         with:
-          files: ./coverage.xml
+          files: ./i3cex/coverage.xml
           fail_ci_if_error: false
           verbose: true
         continue-on-error: true  # Codecov outages should not fail CI.
@@ -116,6 +130,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y verilator iverilog
+        working-directory: .  # System packages install outside the workspace.
 
       - name: Install Hatch
         run: pipx install hatch
@@ -149,5 +164,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: dist-${{ github.sha }}
-          path: dist/
+          path: i3cex/dist/
           retention-days: 14
