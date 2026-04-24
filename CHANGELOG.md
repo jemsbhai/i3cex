@@ -48,24 +48,38 @@ bump the `MINOR` component.
     manipulation.
   - `PreambleEncodeError` and `PreambleDecodeError` exception types.
 - `tests/unit/framing/test_preamble.py`: 19 unit tests including all
-  3 spec Appendix A vectors (0x90, 0xC0, 0x91) and parametrised
+  3 spec Appendix A vectors (0x90, 0xE0, 0x91) and parametrised
   coverage of all 7 valid capability levels.
+- `tests/unit/framing/test_preamble_rejections.py`: 9 additional unit
+  tests covering previously-uncovered rejection branches (version
+  rejection with 5 parametrised cases, extension_follows=True
+  encoder rejection, extension-follows decoder rejection with 3
+  parametrised cases).
 - `tests/property/framing/test_preamble.py`: 9 Hypothesis property
-  tests covering:
-  - Roundtrip invariant `decode(encode(p)) == p`.
-  - Roundtrip with trailing payload bytes.
-  - Byte-count invariant (always 1 byte in v0.1).
-  - Reserved-bits-are-zero invariant.
-  - EX-present-flag-is-set invariant.
-  - Extension-follows-is-zero-in-v01 invariant.
-  - Decode rejects non-zero reserved bits.
-  - Encode rejects reserved level 7.
-  - Encode rejects non-monotonic bitmap.
-  - Decode rejects empty input.
-  - Decode rejects zero EX-present flag.
+  tests covering roundtrip, byte-count, bit-discipline, and
+  rejection invariants.
+
+#### TLV framing design (ADRs only; implementation in a later commit)
+
+- ADR-0006: TLV length encoding — fixed 1-byte, 0-127 range; Length
+  values 0x80-0xFF reserved for Path β future extension.
+- ADR-0007: TLV nesting deferred. v0.1 records are flat (no
+  protocol-level nesting). Type 0xFE reserved as placeholder for
+  future container semantics.
+- ADR-0008: TLV maximum block size. Device-negotiated, advertised in
+  EX-Discovery CCC response as a 2-byte field. Default 4096 bytes
+  when unadvertised. No minimum floor; devices may advertise any
+  cap >= 1. Effective cap for a (controller, target) pair is the
+  minimum of the two advertised values.
+- ADR-0009: Efficiency Principle. Every sublayer specification MUST
+  include an Overhead Analysis section documenting worst-case bytes,
+  parse complexity delta, bit-packing technique, and an explicit
+  trade-off statement. Sanctioned and unsanctioned optimisation
+  techniques enumerated.
+- ADR index updated.
 
 ### Changed
 
-- Coverage floor (`--cov-fail-under`) raised from 0 to 60 now that
-  real code is landing. Will ratchet up toward 95% as sublayers are
-  implemented.
+- Coverage floor (`--cov-fail-under`) raised from 0 to 60 after
+  initial preamble implementation landed, then ratcheted to 80
+  after `preamble.py` reached 100% line and branch coverage.

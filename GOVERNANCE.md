@@ -134,6 +134,52 @@ changelog entry to the `[Unreleased]` section.
 - **Design decisions**: Architecture Decision Records (ADRs) in
   `docs/adr/` for each package. One ADR per significant choice.
 
+## Efficiency Principle
+
+This section is normative. See [ADR-0009](./i3cex/docs/adr/0009-efficiency-principle.md)
+for the full reasoning and alternatives considered.
+
+> **Every I3C-EX sublayer specification MUST include an "Overhead
+> Analysis" section documenting:**
+>
+> 1. **Worst-case bytes added per frame** by the sublayer, broken
+>    down by record type.
+> 2. **Parse complexity impact**, stated in terms of cyclomatic
+>    complexity delta and worst-case cycles on a representative
+>    constrained microcontroller (Cortex-M0 reference target).
+> 3. **At least one bit-packing or amortisation technique applied**
+>    to the sublayer's wire representation. Sublayers whose wire
+>    representation uses byte-aligned fields where fewer bits would
+>    suffice MUST document why the byte alignment was chosen.
+> 4. **An explicit trade-off statement** in the form:
+>    *"This sublayer adds X bytes to typical frames and Y cycles to
+>    the decoder. The benefit is Z. This trade-off is justified
+>    because W."*
+>
+> Sublayer specifications that do not satisfy this principle MUST
+> NOT progress beyond `-draft` status.
+
+### Sanctioned optimisation techniques
+
+The following techniques are encouraged:
+
+1. **Bit-packing within sublayer payloads.** Pack related fields to
+   the bit level where possible. Required consideration for every
+   sublayer.
+2. **Reserved-bit forward-compatibility** (per ADR-0005 and ADR-0006).
+3. **Sublayer-internal delta encoding** for streaming data. Stateful
+   and sublayer-specific; does not affect the framing layer.
+4. **Schema template negotiation** as a v0.2+ extension path.
+
+### Unsanctioned techniques at v0.1
+
+Documented to prevent accidental re-adoption:
+
+1. Variable-length (varint) length encoding (rejected in ADR-0006).
+2. Combo Types encoding multiple sublayers in one record.
+3. Implicit-length Types (Type value implies a fixed Length).
+4. Protocol-level record nesting (deferred in ADR-0007).
+
 ## Decision Log
 
 This section records high-level project decisions. New decisions
@@ -206,6 +252,61 @@ for Paper 2.
 **Rationale**: Hatch is the current PyPA-aligned standard, uses
 standard `pyproject.toml` without a proprietary lockfile, and has
 better long-term maintenance trajectory.
+
+### 2026-04-23: Preamble wire format (Option A)
+
+**Decision**: Adopt Option A — 1-byte preamble with capability level,
+extension-follows flag, and reserved bits — for v0.1, with documented
+migration paths to 2-byte bitmap (Option B) and 1-byte table-indexed
+(Option C) forms for future versions.
+
+**Rationale**: Minimum wire overhead and trivial decoder; reserved-
+bit discipline preserves forward compatibility. See ADR-0005.
+
+### 2026-04-23: TLV length encoding
+
+**Decision**: Fixed 1-byte Length field, 0-127 range. Values 0x80-0xFF
+are reserved for future extension. Three migration paths (reserved
+Type, high-bit Length extension, continuation records) are documented
+for future use.
+
+**Rationale**: Keeps TLV decoder complexity comparable to preamble
+framing for a fair bakeoff; reserved-bit discipline matches the
+forward-compatibility pattern established elsewhere. See ADR-0006.
+
+### 2026-04-23: TLV nesting deferred
+
+**Decision**: v0.1 TLV records are flat (no protocol-level nesting).
+Type 0xFE is reserved as a placeholder for future container
+semantics; v0.1 encoders MUST NOT emit it and v0.1 decoders MUST
+reject it.
+
+**Rationale**: Evidence-based — sublayer designs (EX-3/5/6) have not
+yet demonstrated a need for hierarchy. Flat TLV keeps the bakeoff
+fair against preamble framing. See ADR-0007.
+
+### 2026-04-23: TLV maximum block size
+
+**Decision**: Device-negotiated maximum block size, advertised in
+the EX-Discovery CCC response as a 2-byte field. Default 4096 bytes
+when unadvertised. No minimum floor; devices may advertise any
+cap >= 1. Effective cap for a (controller, target) pair is the
+minimum of the two advertised values.
+
+**Rationale**: Flexibility across device classes without added per-
+frame latency; init-time cost is 2 bytes of CCC payload. See ADR-0008.
+
+### 2026-04-23: Efficiency Principle
+
+**Decision**: Adopt a formal Efficiency Principle (see normative
+section above) requiring every sublayer specification to include an
+Overhead Analysis section with worst-case byte count, parse
+complexity delta, a documented bit-packing or amortisation technique,
+and an explicit trade-off statement.
+
+**Rationale**: Prevents feature accretion at the specification stage;
+establishes a publishable position on principled extension-layer
+design for Paper 1. See ADR-0009.
 
 ## Publication Ethics
 

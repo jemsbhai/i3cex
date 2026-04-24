@@ -43,3 +43,7 @@ it in. Commit it in the same PR as the change it documents.
 | [0003](./0003-simulation-hybrid-stack.md) | Hybrid simulation stack | Accepted |
 | [0004](./0004-hatch-over-poetry.md) | Hatch over Poetry for packaging | Accepted |
 | [0005](./0005-preamble-wire-format.md) | Preamble wire format (Option A) with forward-compatibility to bitmap and table forms | Accepted |
+| [0006](./0006-tlv-length-encoding.md) | TLV length encoding — fixed 1-byte with documented extension paths | Accepted |
+| [0007](./0007-tlv-nesting-deferred.md) | TLV nesting deferred, Type 0xFE reserved for future container semantics | Accepted |
+| [0008](./0008-tlv-max-block-size.md) | TLV maximum block size — negotiated with 4096-byte default | Accepted |
+| [0009](./0009-efficiency-principle.md) | Efficiency Principle — every feature must offset its cost | Accepted |
