@@ -26,11 +26,27 @@ from i3cex.framing.preamble import (
     decode_option_a,
     encode_option_a,
 )
+from i3cex.framing.tlv import (
+    DEFAULT_MAX_TLV_BLOCK_SIZE_V01,
+    RESERVED_CONTAINER_TYPE,
+    TLVBlockDecodeError,
+    TLVBlockEncodeError,
+    TLVRecord,
+    decode_tlv_block,
+    encode_tlv_block,
+)
 
 __all__ = [
+    "DEFAULT_MAX_TLV_BLOCK_SIZE_V01",
+    "RESERVED_CONTAINER_TYPE",
     "Preamble",
     "PreambleDecodeError",
     "PreambleEncodeError",
+    "TLVBlockDecodeError",
+    "TLVBlockEncodeError",
+    "TLVRecord",
     "decode_option_a",
+    "decode_tlv_block",
     "encode_option_a",
+    "encode_tlv_block",
 ]

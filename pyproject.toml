@@ -170,7 +170,8 @@ addopts = [
     # Ratchet history:
     #   60 -> initial scaffold (no real code yet).
     #   80 -> 2026-04-23: preamble.py at 100%, overall at 82%.
-    "--cov-fail-under=80",
+    #   90 -> 2026-04-23: tlv.py at 100%, overall at 91%.
+    "--cov-fail-under=90",
 ]
 markers = [
     "unit: Pure-function unit tests (no I/O, fast).",

@@ -51,35 +51,58 @@ bump the `MINOR` component.
   3 spec Appendix A vectors (0x90, 0xE0, 0x91) and parametrised
   coverage of all 7 valid capability levels.
 - `tests/unit/framing/test_preamble_rejections.py`: 9 additional unit
-  tests covering previously-uncovered rejection branches (version
-  rejection with 5 parametrised cases, extension_follows=True
-  encoder rejection, extension-follows decoder rejection with 3
-  parametrised cases).
+  tests covering previously-uncovered rejection branches.
 - `tests/property/framing/test_preamble.py`: 9 Hypothesis property
   tests covering roundtrip, byte-count, bit-discipline, and
   rejection invariants.
 
-#### TLV framing design (ADRs only; implementation in a later commit)
+#### TLV framing design (ADRs)
 
 - ADR-0006: TLV length encoding — fixed 1-byte, 0-127 range; Length
-  values 0x80-0xFF reserved for Path β future extension.
-- ADR-0007: TLV nesting deferred. v0.1 records are flat (no
-  protocol-level nesting). Type 0xFE reserved as placeholder for
-  future container semantics.
+  values 0x80-0xFF reserved for Path beta future extension.
+- ADR-0007: TLV nesting deferred. v0.1 records are flat. Type 0xFE
+  reserved as placeholder for future container semantics.
 - ADR-0008: TLV maximum block size. Device-negotiated, advertised in
-  EX-Discovery CCC response as a 2-byte field. Default 4096 bytes
-  when unadvertised. No minimum floor; devices may advertise any
-  cap >= 1. Effective cap for a (controller, target) pair is the
-  minimum of the two advertised values.
+  EX-Discovery CCC response. Default 4096 bytes when unadvertised.
+  No minimum floor.
 - ADR-0009: Efficiency Principle. Every sublayer specification MUST
-  include an Overhead Analysis section documenting worst-case bytes,
-  parse complexity delta, bit-packing technique, and an explicit
-  trade-off statement. Sanctioned and unsanctioned optimisation
-  techniques enumerated.
+  include an Overhead Analysis section.
 - ADR index updated.
+
+#### Framing: TLV block encoder/decoder (Candidate B)
+
+- `src/i3cex/framing/tlv.py`: second framing implementation. Encodes
+  and decodes the TLV wire format per spec v0.1 section 5.2 and
+  ADRs 0006/0007/0008:
+  - `TLVRecord` frozen dataclass with `type_` and `value` fields.
+  - `encode_tlv_block(records, max_size=4096)` with full invariant
+    enforcement: rejects out-of-range Type, reserved Type 0xFE,
+    Value length > 127, and total block size > max_size.
+  - `decode_tlv_block(data, max_size=4096)` with full rejection
+    discipline: rejects blocks exceeding max_size, reserved Type
+    0xFE, Length bytes >= 0x80, truncated headers, and truncated
+    Value fields.
+  - Exported constants: `DEFAULT_MAX_TLV_BLOCK_SIZE_V01` (4096),
+    `MAX_VALUE_LENGTH_V01` (127), `RESERVED_LENGTH_MIN` (0x80),
+    `RESERVED_CONTAINER_TYPE` (0xFE), `MIN_TYPE_VALUE` (0x00),
+    `MAX_TYPE_VALUE` (0xFF).
+  - `TLVBlockEncodeError` and `TLVBlockDecodeError` exception types.
+- `tests/unit/framing/test_tlv.py`: 21 unit tests covering all spec
+  Appendix A examples (A.5 single record, A.6 multi-record, A.7
+  reserved Type rejection, A.8 reserved Length rejection) plus
+  parametrised coverage of every non-reserved Type range boundary
+  and max-size negotiation behaviour.
+- `tests/property/framing/test_tlv.py`: 15 Hypothesis property tests
+  covering roundtrip, wire-size, Length-byte discipline, empty block,
+  and encoder/decoder rejection invariants.
 
 ### Changed
 
-- Coverage floor (`--cov-fail-under`) raised from 0 to 60 after
-  initial preamble implementation landed, then ratcheted to 80
-  after `preamble.py` reached 100% line and branch coverage.
+- Coverage floor (`--cov-fail-under`) ratchet progression:
+  - 0 -> 60 after initial preamble implementation.
+  - 60 -> 80 after `preamble.py` hit 100%, overall 82%.
+  - 80 -> 90 after `tlv.py` hit 100%, overall 91%.
+- `src/i3cex/framing/__init__.py`: now exposes both the preamble API
+  (`Preamble`, `encode_option_a`, `decode_option_a`, error types) and
+  the TLV API (`TLVRecord`, `encode_tlv_block`, `decode_tlv_block`,
+  error types, and constants).
