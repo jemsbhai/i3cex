@@ -1,6 +1,6 @@
 # ADR-0016: Wire-overhead methodology
 
-- **Status**: Proposed
+- **Status**: Accepted
 - **Date**: 2026-07-16
 - **Deciders**: Project maintainer
 - **Consulted**: RFC 6709, ADR-0009, ADR-0010, and the I3C Basic v1.2

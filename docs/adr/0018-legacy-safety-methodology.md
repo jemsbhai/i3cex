@@ -1,6 +1,6 @@
 # ADR-0018: Legacy-safety methodology
 
-- **Status**: Proposed
+- **Status**: Accepted
 - **Date**: 2026-07-16
 - **Deciders**: Project maintainer
 - **Consulted**: RFC 6709, LLVM libFuzzer and sanitizer documentation,

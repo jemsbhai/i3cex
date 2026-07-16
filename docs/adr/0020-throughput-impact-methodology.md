@@ -1,6 +1,6 @@
 # ADR-0020: Throughput-impact methodology
 
-- **Status**: Proposed
+- **Status**: Accepted
 - **Date**: 2026-07-16
 - **Deciders**: Project maintainer
 - **Consulted**: RFC 1242, RFC 2544, RFC 9004, ADR-0011, ADR-0016, and

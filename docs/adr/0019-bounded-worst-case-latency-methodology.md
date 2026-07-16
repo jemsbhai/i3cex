@@ -1,6 +1,6 @@
 # ADR-0019: Bounded worst-case latency methodology
 
-- **Status**: Proposed
+- **Status**: Accepted
 - **Date**: 2026-07-16
 - **Deciders**: Project maintainer
 - **Consulted**: Wilhelm et al., ADR-0011, ADR-0016, and the I3C Basic v1.2

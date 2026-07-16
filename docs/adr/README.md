@@ -53,8 +53,8 @@ it in. Commit it in the same PR as the change it documents.
 | [0013](./0013-extensibility-coverage-strategy.md) | Extensibility coverage strategy | Accepted |
 | [0014](./0014-extensibility-per-scenario-measurements.md) | Extensibility per-scenario measurements and decision rule | Accepted |
 | [0015](./0015-i3c-basic-v1.2-standards-alignment.md) | I3C Basic v1.2 standards alignment | Accepted |
-| [0016](./0016-wire-overhead-methodology.md) | Wire-overhead methodology | Proposed |
-| [0017](./0017-parse-complexity-methodology.md) | Parse-complexity methodology | Proposed |
-| [0018](./0018-legacy-safety-methodology.md) | Legacy-safety methodology | Proposed |
-| [0019](./0019-bounded-worst-case-latency-methodology.md) | Bounded worst-case latency methodology | Proposed |
-| [0020](./0020-throughput-impact-methodology.md) | Throughput-impact methodology | Proposed |
+| [0016](./0016-wire-overhead-methodology.md) | Wire-overhead methodology | Accepted |
+| [0017](./0017-parse-complexity-methodology.md) | Parse-complexity methodology | Accepted |
+| [0018](./0018-legacy-safety-methodology.md) | Legacy-safety methodology | Accepted |
+| [0019](./0019-bounded-worst-case-latency-methodology.md) | Bounded worst-case latency methodology | Accepted |
+| [0020](./0020-throughput-impact-methodology.md) | Throughput-impact methodology | Accepted |

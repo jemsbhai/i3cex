@@ -1,6 +1,6 @@
 # ADR-0017: Parse-complexity methodology
 
-- **Status**: Proposed
+- **Status**: Accepted
 - **Date**: 2026-07-16
 - **Deciders**: Project maintainer
 - **Consulted**: McCabe, NIST structured testing guidance, GNU toolchain
