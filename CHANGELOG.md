@@ -24,6 +24,13 @@ bump the `MINOR` component.
   sets, and measured pairwise nuisance-factor coverage.
 - Accepted ADR-0014: fixed compatibility outcomes, non-compensable safety
   failures, per-scenario cost vectors, and a Pareto decision rule.
+- Frozen `manifest-v1.json` for the extensibility axis with twelve semantic
+  scenarios, 192 mandatory core cells, safe old/new compatibility oracles,
+  boundary models, deterministic implementation order, and a SHA-256 sidecar.
+- Standard-library manifest validator, JSON Schema, unit tests, Hatch command,
+  and CI validation step.
+- Canonical LF checkout rules and a regression test keep the byte-exact
+  manifest hash reproducible on Windows, Linux, and macOS.
 
 #### Standalone repository and standards alignment
 

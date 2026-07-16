@@ -93,6 +93,7 @@ tests/              Unit, property, integration, cosim, and vector tests
 specs/              Versioned I3C-EX specification drafts
 docs/adr/           Architecture decision records
 docs/standards/     Standards alignment and conformance boundary
+experiments/        Frozen experiment manifests and reproducibility metadata
 scripts/            Cross-platform development helpers
 ```
 
