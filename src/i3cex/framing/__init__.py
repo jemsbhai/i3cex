@@ -3,7 +3,7 @@
 This subpackage implements two candidate framing strategies for I3C-EX
 metadata. Both are implemented so that we can empirically compare them
 on wire overhead, parse complexity, extensibility, and other criteria
-per :doc:`../../../specs/I3CEX-0.1.0-draft.md` section 5.
+per :doc:`../../../specs/I3CEX-0.2.0-draft.md` section 5.
 
 Modules:
     preamble:  Candidate A. Single reserved byte preceding the I3C payload.

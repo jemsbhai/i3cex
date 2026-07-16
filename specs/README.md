@@ -1,73 +1,28 @@
 # Specifications
 
-This directory contains all specification documents for the I3C-EX and
-I4C projects.
+This directory contains versioned I3C-EX specification documents.
 
-## Document Naming Convention
+## Naming and versioning
 
-Specifications are named:
+Documents use `I3CEX-MAJOR.MINOR.PATCH-STAGE.md`, where the optional stage is
+`draft` or `rcN`. Version meaning and graduation rules are defined in
+[GOVERNANCE.md](../GOVERNANCE.md).
 
-```
-<PROJECT>-<MAJOR>.<MINOR>.<PATCH>[-<STAGE>].md
-```
+Drafts may change. Once published as a release candidate or stable release, a
+specification is immutable; semantic changes require a new version.
 
-Where:
-- `<PROJECT>` is `I3CEX` or `I4C`
-- `<MAJOR>.<MINOR>.<PATCH>` follows [Semantic Versioning 2.0.0](https://semver.org)
-- `<STAGE>` is optional: `draft` for active development, `rc1`/`rc2`/... for
-  release candidates. Omitted for stable releases.
+## Current documents
 
-## Versioning Rules
+| File | Status |
+|---|---|
+| [I3CEX-0.2.0-draft.md](./I3CEX-0.2.0-draft.md) | Current draft; aligns the protocol boundary to I3C Basic v1.2 |
+| [I3CEX-0.1.0-draft.md](./I3CEX-0.1.0-draft.md) | Historical pre-registration draft; superseded as the active draft |
 
-See [`../GOVERNANCE.md`](../GOVERNANCE.md) for full versioning rules.
+The Python implementation at the repository root tracks the current draft.
 
-Summary:
-- **MAJOR**: Breaking protocol changes (incompatible frame formats, wire changes)
-- **MINOR**: Backward-compatible additions (new optional sublayers, new CCCs)
-- **PATCH**: Clarifications, errata, non-normative fixes
-- `-draft`: Under active development; breaking changes expected without notice
-- `-rcN`: Release candidate; stable unless critical issues found
+## External standards boundary
 
-## Immutability
-
-Once a specification is published without the `-draft` suffix (i.e., as a
-release candidate or stable release), the file is immutable. Errata and
-clarifications produce new PATCH-level files. The only edits permitted to
-non-draft specs are typo fixes that change no semantics.
-
-Draft specifications can be edited freely until they graduate to `-rcN`.
-
-## Current Documents
-
-| Project | File | Status |
-|---------|------|--------|
-| I3C-EX | [`I3CEX-0.1.0-draft.md`](./I3CEX-0.1.0-draft.md) | Draft, unstable |
-| I4C | [`I4C-0.0.1-placeholder.md`](./I4C-0.0.1-placeholder.md) | Placeholder |
-
-## Specification Structure
-
-All specifications follow the same section structure (MIPI-inspired but
-simplified):
-
-1. **Status and Versioning** — document version, status, replaces/superseded by
-2. **Scope** — what this document covers and does not cover
-3. **Terminology** — normative terms (MUST, SHOULD, MAY per RFC 2119)
-4. **Background** — motivation, prior art, relationship to I3C
-5. **Protocol Overview** — high-level architecture
-6. **Normative Specification** — the actual wire-level/behavioural rules
-7. **Optional Features** — clearly separated from mandatory features
-8. **Conformance** — what an implementation must do to claim conformance
-9. **Security Considerations**
-10. **References**
-11. **Appendix: Non-normative examples**
-
-## Pre-registration
-
-Specifications are written **before** implementation per our
-pre-registration policy (see GOVERNANCE.md). This creates an immutable
-record of the research hypothesis.
-
-The implementation in `i3cex/` and `i4c/` is expected to track the spec,
-not the other way around. Changes discovered through implementation that
-require spec changes are recorded as ADRs first, then folded back into
-the next draft.
+These documents are original project materials. They do not reproduce or
+replace MIPI specifications. Obtain I3C Basic from MIPI Alliance and review its
+applicable terms independently. The project's normative alignment policy is
+[I3C_BASIC_V1_2_ALIGNMENT.md](../docs/standards/I3C_BASIC_V1_2_ALIGNMENT.md).

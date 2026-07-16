@@ -47,3 +47,7 @@ it in. Commit it in the same PR as the change it documents.
 | [0007](./0007-tlv-nesting-deferred.md) | TLV nesting deferred, Type 0xFE reserved for future container semantics | Accepted |
 | [0008](./0008-tlv-max-block-size.md) | TLV maximum block size — negotiated with 4096-byte default | Accepted |
 | [0009](./0009-efficiency-principle.md) | Efficiency Principle — every feature must offset its cost | Accepted |
+| [0010](./0010-bakeoff-evaluation-methodology.md) | Framing bakeoff evaluation methodology | Accepted |
+| [0015](./0015-i3c-basic-v1.2-standards-alignment.md) | I3C Basic v1.2 standards alignment | Accepted |
+
+ADR-0010 reserves ADR-0011 through ADR-0014 for its methodology family.

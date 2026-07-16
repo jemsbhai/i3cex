@@ -1,19 +1,34 @@
 # Governance, Versioning, and Development Standards
 
 This document establishes the governance model, versioning scheme,
-development practices, and quality standards for the I3C-EX and I4C
-projects.
+development practices, standards boundary, and quality standards for I3C-EX.
 
 ## Project Scope and Boundaries
 
-This repository hosts two related but independent projects:
+This repository hosts **I3C-EX**, an independent research content protocol
+based on I3C Basic v1.2. I4C remains a distinct future research track in the
+historical umbrella repository and is not governed or implemented here.
 
-1. **I3C-EX**: An extension layer atop MIPI I3C. Lives in `i3cex/`.
-2. **I4C**: A clean-slate redesign sharing I3C's physical layer. Lives
-   in `i4c/`.
+Specifications live in `specs/`; the reference package lives in `src/i3cex/`.
 
-Specifications live in `specs/` for both projects. Each project has its
-own package, CHANGELOG, and independent version trajectory.
+## Standards and intellectual-property boundary
+
+This section is normative. See [ADR-0015](./docs/adr/0015-i3c-basic-v1.2-standards-alignment.md)
+and the full [I3C Basic v1.2 alignment policy](./docs/standards/I3C_BASIC_V1_2_ALIGNMENT.md).
+
+- The base compatibility target is MIPI I3C Basic v1.2 plus published errata.
+- I3C-EX is an independent content protocol and does not amend I3C Basic.
+- I3C-EX semantics are disabled until selected through SETBUSCON using an
+  assigned context and negotiated with the addressed endpoint.
+- I3C-EX data uses standard Private SDR transfers and respects SETMRL/SETMWL.
+- Numeric Context Byte, extension CCC, and MDB values are not invented. Public
+  interoperability requires appropriate assignment or coordination.
+- Base I3C conformance and I3C-EX conformance are tested and reported separately.
+- No project material may claim MIPI affiliation, endorsement, certification,
+  or approval.
+- MIPI specifications and test-suite materials are not redistributed here.
+- The MIT License covers original project materials only; it does not license
+  MIPI materials, marks, third-party materials, or patent rights.
 
 ## Versioning
 
@@ -136,7 +151,7 @@ changelog entry to the `[Unreleased]` section.
 
 ## Efficiency Principle
 
-This section is normative. See [ADR-0009](./i3cex/docs/adr/0009-efficiency-principle.md)
+This section is normative. See [ADR-0009](./docs/adr/0009-efficiency-principle.md)
 for the full reasoning and alternatives considered.
 
 > **Every I3C-EX sublayer specification MUST include an "Overhead
@@ -221,12 +236,11 @@ Metadata envelope is foundational; everything else rides on it.
 
 ### 2026-04-23: Licensing — MIT
 
-**Decision**: MIT license for both I3C-EX and I4C code and
-specifications.
+**Decision**: MIT license for original I3C-EX code and specifications.
 
-**Rationale**: Maximally permissive; encourages industry adoption.
-Compatible with the Apache-2.0-licensed chipsalliance/i3c-core which
-we will depend on for RTL cosimulation.
+**Rationale**: Permissive licensing supports reproducibility and is compatible
+with the Apache-2.0-licensed chipsalliance/i3c-core used for RTL cosimulation.
+It does not license MIPI materials, marks, or patent rights.
 
 ### 2026-04-23: Simulation strategy — hybrid stack
 
@@ -308,6 +322,16 @@ and an explicit trade-off statement.
 establishes a publishable position on principled extension-layer
 design for Paper 1. See ADR-0009.
 
+### 2026-07-15: I3C Basic v1.2 standards alignment
+
+**Decision**: Position I3C-EX as an independent content protocol based on I3C
+Basic v1.2. Gate its semantics through SETBUSCON context selection, use Private
+SDR for data, reserve numeric identifiers until assigned, and keep base I3C and
+I3C-EX conformance claims separate.
+
+**Rationale**: This creates a precise, standards-compatible research boundary
+without implying MIPI affiliation or modifying the base protocol. See ADR-0015.
+
 ## Publication Ethics
 
 - All work is pre-registered via specification drafts in `specs/`
@@ -340,7 +364,10 @@ Post public release (post-Paper-1 submission):
 
 ## References
 
-- MIPI I3C Basic v1.1.1 specification
+- [MIPI I3C Basic specification](https://www.mipi.org/specifications/i3c-sensor-specification)
+- [I3C Basic terms and conditions](https://www.mipi.org/terms-conditions-i3c-basic)
+- [Public Bus Context Byte registry](https://www.mipi.org/mipi_i3c_bus_context_byte_values_public.html)
+- [Public Mandatory Data Byte registry](https://www.mipi.org/MIPI_I3C_mandatory_data_byte_values_public)
 - [chipsalliance/i3c-core](https://github.com/chipsalliance/i3c-core)
 - [Semantic Versioning 2.0.0](https://semver.org)
 - [Keep a Changelog](https://keepachangelog.com/)

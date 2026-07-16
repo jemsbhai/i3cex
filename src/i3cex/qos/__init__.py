@@ -11,7 +11,7 @@ Planned capabilities:
 
 Depends on: EX-1 metadata envelope.
 
-See :doc:`../../../specs/I3CEX-0.1.0-draft.md` section 6.2.
+See :doc:`../../../specs/I3CEX-0.2.0-draft.md` section 6.2.
 
 Status:
     Stub. Design begins after EX-1 stabilises. No implementation yet.

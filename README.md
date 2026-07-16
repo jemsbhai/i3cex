@@ -1,136 +1,100 @@
-# i3cex
+# I3C-EX
 
-Extension layers for MIPI I3C targeting edge AI and edge ML workloads.
+I3C-EX is an independent research project exploring a higher-layer content
+protocol for edge AI/ML metadata and coordination over MIPI I3C Basic.
 
-> **Pre-alpha**. Specification and implementation are in flux. Not yet
-> published to PyPI. See [`../specs/I3CEX-0.1.0-draft.md`](../specs/I3CEX-0.1.0-draft.md)
-> for the current specification draft.
+> **Independent pre-alpha research.** This project is not affiliated with,
+> sponsored by, approved by, or endorsed by MIPI Alliance. I3C and I3C Basic
+> are MIPI Alliance specifications and marks. See [NOTICE.md](./NOTICE.md).
 
-## What is I3C-EX?
+The current compatibility target is the publicly available **MIPI I3C Basic
+v1.2** specification, adopted 17 April 2025, together with its published
+errata. I3C-EX does not alter I3C signalling, addressing, arbitration, or
+base framing. It proposes optional content carried in standard Private SDR
+Read/Write transfers after explicit, context-scoped negotiation.
 
-I3C-EX is a set of optional, backward-compatible extension layers atop
-MIPI I3C. It adds metadata envelopes, QoS negotiation, Byzantine fusion
-signalling, distributed timestamping, provenance/attestation, and
-confidence propagation — all as optional sublayers that run on existing
-I3C hardware with firmware updates only.
+## Status
 
-See the top-level [`../README.md`](../README.md) for project motivation
-and dual-track strategy, and [`../GOVERNANCE.md`](../GOVERNANCE.md) for
-development standards.
+- Current specification: [I3CEX-0.2.0-draft](./specs/I3CEX-0.2.0-draft.md).
+- Implemented: the two experimental framing candidates, preamble and TLV.
+- Not implemented: discovery, base-bus integration, simulator, cosimulation,
+  and the six proposed semantic sublayers.
+- Not published to PyPI.
+- No MIPI Context Byte, extension CCC, or Mandatory Data Byte value has been
+  assigned to this project. Draft names are symbolic and have no wire value.
 
-## Installation (once published)
+The project is intended to produce a reproducible research paper and, if the
+evidence supports it, a future proposal to MIPI Alliance. It does not claim
+MIPI conformance, certification, or endorsement.
 
-```bash
-pip install i3cex                   # core library
-pip install "i3cex[sim]"            # with pure-Python simulator extras
-pip install "i3cex[cosim]"          # with cocotb cosimulation (Linux/WSL2)
-pip install "i3cex[dev]"            # development tooling
-```
+## Architecture boundary
+
+I3C-EX is a content protocol based on I3C Basic, not a replacement or modified
+edition of I3C. A conforming experiment uses:
+
+1. a separately conforming I3C Basic v1.2 controller and target;
+2. standard Private SDR Read/Write transfers for I3C-EX data;
+3. SETBUSCON with an assigned Context Byte before I3C-EX semantics are enabled;
+4. a directed extension CCC, once assigned, for capability discovery only; and
+5. the base transfer limits established by SETMRL and SETMWL.
+
+Until public identifiers are assigned, experiments may use only deliberately
+configured private values in the MIPI-reserved private range and must not
+represent those values as interoperable allocations. See the normative
+[standards alignment policy](./docs/standards/I3C_BASIC_V1_2_ALIGNMENT.md).
+
+Existing hardware may be usable where its controller and target interfaces
+already expose the required Private SDR, SETBUSCON, directed extension CCC,
+and optional IBI facilities. A firmware update alone is therefore a platform-
+specific possibility, not a universal compatibility claim.
+
+## Research roadmap
+
+The first milestone is a framing bakeoff, using the pre-registered methodology
+in [ADR-0010](./docs/adr/0010-bakeoff-evaluation-methodology.md). Only after the
+methodology family is fixed will the benchmark harness be implemented.
+
+Proposed sublayers are developed sequentially:
+
+1. EX-1 metadata envelope
+2. EX-2 quality-of-service negotiation
+3. EX-3 Byzantine fusion signalling
+4. EX-4 distributed timestamping
+5. EX-5 provenance and attestation
+6. EX-6 confidence propagation and extended error reporting
 
 ## Development
 
-### Prerequisites
-
-- Python 3.11 or later (3.12+ recommended).
-- [Hatch](https://hatch.pypa.io/) for environment management
-  (`pipx install hatch`).
-- For cosimulation only: Linux or WSL2, Verilator 5.012+, Icarus Verilog 12.0+.
-
-### Setup
+Requirements are Python 3.11 or later and
+[Hatch](https://hatch.pypa.io/). From the repository root:
 
 ```bash
-# From repository root:
-cd i3cex
-
-# Create the dev environment
 hatch env create
-
-# Run unit and property tests
 hatch run test
-
-# Run full test suite with coverage
 hatch run cov
-
-# Run linter
 hatch run lint
-
-# Run type checker
 hatch run typecheck
-
-# Run all quality checks
 hatch run check
+hatch run docs:build
 ```
 
-### Project Structure
+The test tree separates unit, property, integration, optional RTL cosimulation,
+and protocol-vector tests. See [GOVERNANCE.md](./GOVERNANCE.md) for contribution,
+quality, publication, and standards-boundary rules.
 
+## Repository layout
+
+```text
+src/i3cex/          Python reference implementation
+tests/              Unit, property, integration, cosim, and vector tests
+specs/              Versioned I3C-EX specification drafts
+docs/adr/           Architecture decision records
+docs/standards/     Standards alignment and conformance boundary
+scripts/            Cross-platform development helpers
 ```
-i3cex/
-├── pyproject.toml              Hatch-based build configuration
-├── README.md                   This file
-├── LICENSE                     MIT
-├── CHANGELOG.md                Keep-a-changelog format
-├── .gitignore
-├── .pre-commit-config.yaml     Ruff + mypy on every commit
-├── src/
-│   └── i3cex/
-│       ├── __init__.py         Package root, version exported
-│       ├── py.typed            PEP 561 marker
-│       ├── framing/            Wire-level framing strategies
-│       │   ├── __init__.py
-│       │   ├── preamble.py     Candidate A: preamble-byte framing
-│       │   └── tlv.py          Candidate B: TLV framing
-│       ├── envelope/           EX-1: metadata envelope sublayer
-│       │   └── __init__.py
-│       ├── qos/                EX-2: quality-of-service (stub)
-│       │   └── __init__.py
-│       ├── fusion/             EX-3: Byzantine fusion signalling (stub)
-│       │   └── __init__.py
-│       ├── timesync/           EX-4: distributed timestamping (stub)
-│       │   └── __init__.py
-│       ├── provenance/         EX-5: provenance/attestation (stub)
-│       │   └── __init__.py
-│       ├── confidence/         EX-6: confidence propagation (stub)
-│       │   └── __init__.py
-│       └── sim/                Pure-Python I3C/I3C-EX simulator
-│           └── __init__.py
-├── tests/
-│   ├── unit/                   Fast pure-function tests
-│   ├── property/               Hypothesis-based generative tests
-│   ├── integration/            Multi-component, uses sim
-│   ├── cosim/                  cocotb tests vs chipsalliance/i3c-core RTL
-│   └── vectors/                Normative test vectors (spec conformance)
-└── docs/
-    └── adr/                    Architecture Decision Records
-```
-
-## Testing Philosophy
-
-See [`../GOVERNANCE.md`](../GOVERNANCE.md) for the full statement. Summary:
-
-- **Strict TDD.** No implementation code lands without a failing test first.
-- **Four test layers.** Unit, property, integration, cosim.
-- **Coverage targets.** 95%+ line / 90%+ branch for core; 85%+ for
-  utility; 80%+ for sim.
-- **Property tests are mandatory for parsers and framers.** Every wire
-  format decoder MUST have a `hypothesis` roundtrip test.
-- **Pre-registered specifications.** The spec in `../specs/` is written
-  first; code tracks the spec.
-
-## Sublayer Roadmap
-
-I3C-EX sublayers are implemented sequentially:
-
-1. **EX-1 metadata envelope** — in progress (v0.1.0).
-2. **EX-2 QoS negotiation** — after EX-1 stabilises.
-3. **EX-3 Byzantine fusion** — after EX-2.
-4. **EX-4 distributed timestamping** — after EX-3.
-5. **EX-5 provenance/attestation** — after EX-4.
-6. **EX-6 confidence propagation** — after EX-5.
-
-Framing strategy (preamble-byte vs TLV) is chosen empirically before
-EX-1 stabilises; see [`../specs/I3CEX-0.1.0-draft.md`](../specs/I3CEX-0.1.0-draft.md)
-section 5.
 
 ## License
 
-MIT. See [`LICENSE`](./LICENSE).
+The project's original code and documents are licensed under the MIT License.
+That license does not apply to MIPI specifications, MIPI marks, third-party
+materials, or patent rights. See [LICENSE](./LICENSE) and [NOTICE.md](./NOTICE.md).

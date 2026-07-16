@@ -12,7 +12,7 @@ Planned capabilities:
 
 Depends on: EX-3 Byzantine fusion signalling.
 
-See :doc:`../../../specs/I3CEX-0.1.0-draft.md` section 6.4.
+See :doc:`../../../specs/I3CEX-0.2.0-draft.md` section 6.4.
 
 Status:
     Stub. Design begins after EX-3 stabilises. No implementation yet.

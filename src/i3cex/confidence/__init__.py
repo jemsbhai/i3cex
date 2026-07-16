@@ -12,7 +12,7 @@ Planned capabilities:
 
 Depends on: EX-5 provenance and attestation.
 
-See :doc:`../../../specs/I3CEX-0.1.0-draft.md` section 6.6.
+See :doc:`../../../specs/I3CEX-0.2.0-draft.md` section 6.6.
 
 Status:
     Stub. Design begins after EX-5 stabilises. No implementation yet.

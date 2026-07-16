@@ -96,7 +96,8 @@ DEFAULT_MAX_TLV_BLOCK_SIZE_V01: Final[int] = 4096
 
 Used when the caller does not pass an explicit ``max_size``. Represents
 the size a device advertises when it declines to include an explicit
-cap in its EX-Discovery CCC response.
+cap in its directed ``EXDISC`` response. The caller remains responsible
+for applying the stricter SETMRL/SETMWL-derived directional budget.
 """
 
 MAX_VALUE_LENGTH_V01: Final[int] = 0x7F  # 127

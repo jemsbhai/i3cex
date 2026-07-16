@@ -12,7 +12,7 @@ Planned capabilities:
 
 Depends on: EX-2 QoS negotiation.
 
-See :doc:`../../../specs/I3CEX-0.1.0-draft.md` section 6.3.
+See :doc:`../../../specs/I3CEX-0.2.0-draft.md` section 6.3.
 
 Status:
     Stub. Design begins after EX-2 stabilises. No implementation yet.

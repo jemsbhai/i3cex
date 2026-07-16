@@ -13,7 +13,7 @@ Every higher sublayer (QoS, fusion, timestamping, provenance,
 confidence) rides on top of the envelope. A device supporting any
 EX-N level MUST also support EX-1.
 
-See :doc:`../../../specs/I3CEX-0.1.0-draft.md` section 6.1.
+See :doc:`../../../specs/I3CEX-0.2.0-draft.md` section 6.1.
 
 Status:
     Skeleton. Detailed bit-level layout is pending the framing strategy

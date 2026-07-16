@@ -14,7 +14,7 @@ Planned capabilities:
 
 Depends on: EX-4 distributed timestamping.
 
-See :doc:`../../../specs/I3CEX-0.1.0-draft.md` section 6.5.
+See :doc:`../../../specs/I3CEX-0.2.0-draft.md` section 6.5.
 
 Status:
     Stub. Design begins after EX-4 stabilises. No implementation yet.
