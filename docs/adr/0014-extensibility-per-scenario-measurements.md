@@ -1,6 +1,6 @@
 # ADR-0014: Extensibility per-scenario measurements and decision rule
 
-- **Status**: Proposed
+- **Status**: Accepted
 - **Date**: 2026-07-16
 - **Deciders**: Project maintainer
 - **Consulted**: RFC 6709; ADR-0011 through ADR-0013

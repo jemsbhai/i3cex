@@ -1,6 +1,6 @@
 # ADR-0012: Extensibility scenario taxonomy
 
-- **Status**: Proposed
+- **Status**: Accepted
 - **Date**: 2026-07-16
 - **Deciders**: Project maintainer
 - **Consulted**: RFC 6709 and RFC 9170

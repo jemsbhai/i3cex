@@ -1,6 +1,6 @@
 # ADR-0011: Python and C side-by-side measurement for runtime axes
 
-- **Status**: Proposed
+- **Status**: Accepted
 - **Date**: 2026-07-16
 - **Deciders**: Project maintainer
 - **Consulted**: Kalibera and Jones; Georges, Buytaert, and Eeckhout; Arm,

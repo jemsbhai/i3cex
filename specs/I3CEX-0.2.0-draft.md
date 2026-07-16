@@ -498,16 +498,16 @@ Methodology is pre-registered before benchmark implementation:
 
 - ADR-0010 requires all six axes and separates cross-cutting rules from
   per-axis methods.
-- ADR-0011 proposes independent Python and C implementations with embedded C
+- ADR-0011 requires independent Python and C implementations with embedded C
   as the primary runtime endpoint and within-language paired comparisons.
-- ADR-0012 proposes a twelve-scenario framing-neutral extensibility taxonomy.
-- ADR-0013 proposes exhaustive candidate/version/direction coverage plus
+- ADR-0012 defines a twelve-scenario framing-neutral extensibility taxonomy.
+- ADR-0013 requires exhaustive candidate/version/direction coverage plus
   measured pairwise coverage of nuisance factors.
-- ADR-0014 proposes fixed semantic outcomes, a safety gate, and Pareto
+- ADR-0014 defines fixed semantic outcomes, a safety gate, and Pareto
   comparison without a weighted extensibility score.
 
-These four downstream ADRs MUST be accepted and their machine-readable
-experiment manifest committed before labeled bakeoff measurements begin.
+Their machine-readable experiment manifest and the remaining per-axis
+methodology MUST be committed before labeled bakeoff measurements begin.
 
 ---
 

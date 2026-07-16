@@ -1,6 +1,6 @@
 # ADR-0013: Extensibility coverage strategy
 
-- **Status**: Proposed
+- **Status**: Accepted
 - **Date**: 2026-07-16
 - **Deciders**: Project maintainer
 - **Consulted**: NIST combinatorial-testing guidance

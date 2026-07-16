@@ -175,8 +175,9 @@ addopts = [
     # Ratchet history:
     #   60 -> initial scaffold (no real code yet).
     #   80 -> 2026-04-23: preamble.py at 100%, overall at 82%.
-    #   90 -> 2026-04-23: tlv.py at 100%, overall at 91%.
-    "--cov-fail-under=90",
+    #   90.01 -> 2026-07-16: enforce the project requirement that total
+    #            coverage is strictly greater than 90%, not equal to it.
+    "--cov-fail-under=90.01",
 ]
 markers = [
     "unit: Pure-function unit tests (no I/O, fast).",
@@ -201,6 +202,7 @@ parallel = true
 source = ["src/i3cex", "*/site-packages/i3cex"]
 
 [tool.coverage.report]
+precision = 2
 show_missing = true
 skip_covered = false
 exclude_also = [

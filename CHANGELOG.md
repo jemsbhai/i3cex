@@ -14,15 +14,15 @@ bump the `MINOR` component.
 
 #### Framing bakeoff methodology
 
-- Proposed ADR-0011: independent Python and freestanding-C implementations,
+- Accepted ADR-0011: independent Python and freestanding-C implementations,
   differential correctness gating, paired within-language comparisons, and a
   Cortex-M0 primary runtime endpoint.
-- Proposed ADR-0012: a framing-neutral taxonomy of twelve canonical
+- Accepted ADR-0012: a framing-neutral taxonomy of twelve canonical
   extensibility scenarios spanning features, schemas, sizes, structures,
   version skew, composition, and namespace exhaustion.
-- Proposed ADR-0013: a 192-cell exhaustive core matrix, mandatory boundary
+- Accepted ADR-0013: a 192-cell exhaustive core matrix, mandatory boundary
   sets, and measured pairwise nuisance-factor coverage.
-- Proposed ADR-0014: fixed compatibility outcomes, non-compensable safety
+- Accepted ADR-0014: fixed compatibility outcomes, non-compensable safety
   failures, per-scenario cost vectors, and a Pareto decision rule.
 
 #### Standalone repository and standards alignment
