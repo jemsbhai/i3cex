@@ -48,6 +48,8 @@ it in. Commit it in the same PR as the change it documents.
 | [0008](./0008-tlv-max-block-size.md) | TLV maximum block size — negotiated with 4096-byte default | Accepted |
 | [0009](./0009-efficiency-principle.md) | Efficiency Principle — every feature must offset its cost | Accepted |
 | [0010](./0010-bakeoff-evaluation-methodology.md) | Framing bakeoff evaluation methodology | Accepted |
+| [0011](./0011-python-c-side-by-side-measurement.md) | Python and C side-by-side runtime measurement | Accepted |
+| [0012](./0012-extensibility-scenario-taxonomy.md) | Extensibility scenario taxonomy | Accepted |
+| [0013](./0013-extensibility-coverage-strategy.md) | Extensibility coverage strategy | Accepted |
+| [0014](./0014-extensibility-per-scenario-measurements.md) | Extensibility per-scenario measurements and decision rule | Accepted |
 | [0015](./0015-i3c-basic-v1.2-standards-alignment.md) | I3C Basic v1.2 standards alignment | Accepted |
-
-ADR-0010 reserves ADR-0011 through ADR-0014 for its methodology family.

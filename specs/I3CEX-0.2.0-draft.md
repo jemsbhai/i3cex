@@ -481,15 +481,33 @@ and reported in Paper 1:
 
 1. **Wire overhead**: Bytes added per transaction for EX-1 through EX-6.
 2. **Parse complexity**: Cyclomatic complexity of the receiver decoder.
-3. **Extensibility**: Effort to add a new sublayer or record type.
+3. **Extensibility**: Compatibility, framing intervention, namespace use, and
+   implementation change required to add or evolve protocol semantics.
 4. **Legacy safety**: Behaviour when an EX-aware device receives
    malformed EX data from a misbehaving peer.
 5. **Worst-case latency impact**: Additional decode time under load.
 6. **Throughput impact**: Effective payload bandwidth given envelope
    overhead.
 
-Both strategies will be implemented; the loser will be documented in
-an ADR and in Paper 1 as a negative result.
+Both strategies will be implemented. If the registered evidence selects a
+loser, it will be documented in an ADR and in Paper 1 as a negative result. If
+the evidence establishes a trade-off without a unique winner, that result will
+be reported without forcing a ranking.
+
+Methodology is pre-registered before benchmark implementation:
+
+- ADR-0010 requires all six axes and separates cross-cutting rules from
+  per-axis methods.
+- ADR-0011 requires independent Python and C implementations with embedded C
+  as the primary runtime endpoint and within-language paired comparisons.
+- ADR-0012 defines a twelve-scenario framing-neutral extensibility taxonomy.
+- ADR-0013 requires exhaustive candidate/version/direction coverage plus
+  measured pairwise coverage of nuisance factors.
+- ADR-0014 defines fixed semantic outcomes, a safety gate, and Pareto
+  comparison without a weighted extensibility score.
+
+Their machine-readable experiment manifest and the remaining per-axis
+methodology MUST be committed before labeled bakeoff measurements begin.
 
 ---
 

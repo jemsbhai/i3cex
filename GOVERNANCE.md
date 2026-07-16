@@ -332,11 +332,26 @@ I3C-EX conformance claims separate.
 **Rationale**: This creates a precise, standards-compatible research boundary
 without implying MIPI affiliation or modifying the base protocol. See ADR-0015.
 
+### 2026-07-16: Runtime and extensibility bakeoff methodology
+
+**Decision**: Accept ADR-0011 through ADR-0014. Runtime comparisons use
+independent Python and C implementations with embedded C as the primary
+endpoint. Extensibility uses twelve canonical scenarios, an exhaustive
+192-cell core matrix, fixed semantic outcomes, a non-compensable safety gate,
+and Pareto comparison without a weighted score.
+
+**Rationale**: The methodology freezes research-critical choices before a
+benchmark harness or labeled measurements can reveal candidate behavior.
+
 ## Publication Ethics
 
 - All work is pre-registered via specification drafts in `specs/`
   before implementation begins. This creates an immutable record of
   the research hypothesis and design.
+- Labeled benchmark measurements begin only after the applicable methodology
+  ADRs are accepted and a machine-readable experiment manifest is committed.
+  Pilot measurements are labeled exploratory and are never pooled with the
+  registered result set.
 - Negative results are reported. If preamble framing loses to TLV,
   we publish that. If I3C-EX sublayer X turns out to be unnecessary,
   we publish that.

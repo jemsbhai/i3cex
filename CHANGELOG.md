@@ -12,6 +12,19 @@ bump the `MINOR` component.
 
 ### Added
 
+#### Framing bakeoff methodology
+
+- Accepted ADR-0011: independent Python and freestanding-C implementations,
+  differential correctness gating, paired within-language comparisons, and a
+  Cortex-M0 primary runtime endpoint.
+- Accepted ADR-0012: a framing-neutral taxonomy of twelve canonical
+  extensibility scenarios spanning features, schemas, sizes, structures,
+  version skew, composition, and namespace exhaustion.
+- Accepted ADR-0013: a 192-cell exhaustive core matrix, mandatory boundary
+  sets, and measured pairwise nuisance-factor coverage.
+- Accepted ADR-0014: fixed compatibility outcomes, non-compensable safety
+  failures, per-scenario cost vectors, and a Pareto decision rule.
+
 #### Standalone repository and standards alignment
 
 - Standalone `i3cex` repository retaining the original I3C-EX history.
@@ -110,6 +123,9 @@ bump the `MINOR` component.
 
 ### Changed
 
+- Specification section 5.3 now operationalizes extensibility as compatibility
+  and structural change, and explicitly permits a trade-off result rather than
+  forcing a framing winner.
 - Package development version advanced to `0.2.0.dev0`.
 - Repository links, documentation paths, packaging contents, and CI now target
   the standalone `jemsbhai/i3cex` layout.

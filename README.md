@@ -51,8 +51,11 @@ specific possibility, not a universal compatibility claim.
 ## Research roadmap
 
 The first milestone is a framing bakeoff, using the pre-registered methodology
-in [ADR-0010](./docs/adr/0010-bakeoff-evaluation-methodology.md). Only after the
-methodology family is fixed will the benchmark harness be implemented.
+in [ADR-0010](./docs/adr/0010-bakeoff-evaluation-methodology.md). Accepted
+ADR-0011 through ADR-0014 define cross-language runtime measurement and the
+extensibility taxonomy, coverage, outcomes, and decision rule. Only after the
+remaining methodology family and machine-readable experiment manifest are
+frozen will the benchmark harness be implemented.
 
 Proposed sublayers are developed sequentially:
 

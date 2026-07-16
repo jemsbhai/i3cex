@@ -14,6 +14,7 @@ failing scenario.
 from __future__ import annotations
 
 import re
+from importlib import import_module
 
 import pytest
 
@@ -22,6 +23,27 @@ import pytest
 def test_package_imports() -> None:
     """The package MUST import without error."""
     import i3cex  # noqa: F401 -- imported for side effect of verifying import
+
+
+@pytest.mark.unit
+@pytest.mark.parametrize(
+    "module_name",
+    [
+        "i3cex.confidence",
+        "i3cex.envelope",
+        "i3cex.framing",
+        "i3cex.fusion",
+        "i3cex.provenance",
+        "i3cex.qos",
+        "i3cex.sim",
+        "i3cex.timesync",
+    ],
+)
+def test_declared_package_modules_import(module_name: str) -> None:
+    """Every declared package module MUST remain importable."""
+    module = import_module(module_name)
+
+    assert module.__name__ == module_name
 
 
 @pytest.mark.unit
