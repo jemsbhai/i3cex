@@ -2,3 +2,5 @@
 # their committed SHA-256 sidecars remain reproducible.
 experiments/extensibility/*.json text eol=lf
 experiments/extensibility/*.sha256 text eol=lf
+experiments/bakeoff/*.json text eol=lf
+experiments/bakeoff/*.sha256 text eol=lf

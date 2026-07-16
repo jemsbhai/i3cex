@@ -56,9 +56,12 @@ ADR-0011 through ADR-0014 define cross-language runtime measurement and the
 extensibility taxonomy, coverage, outcomes, and decision rule. Accepted
 ADR-0016 through ADR-0020 define exact wire accounting, static parser
 complexity, legacy safety, bounded worst-case latency, and application
-goodput. A new machine-readable manifest version will now freeze all six axes
-before the benchmark harness or labeled measurements begin. The existing
-manifest v1 remains an immutable extensibility-only preregistration record.
+goodput. Machine-readable
+[manifest v2](./experiments/bakeoff/manifest-v2.json) freezes all six axes
+before benchmark implementation. The existing manifest v1 remains an
+immutable extensibility-only preregistration record. Labeled measurements stay
+disabled until a later execution manifest pins physical inventory, exact tool
+binaries, timing profiles, corpora, and unlabeled-pilot settings.
 
 Proposed sublayers are developed sequentially:
 

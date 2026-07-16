@@ -32,7 +32,7 @@ jobs:
         run: hatch run lint
       - name: Type-check
         run: hatch run typecheck
-      - name: Validate frozen experiment manifest
+      - name: Validate frozen experiment manifests
         run: hatch run validate-manifest
       - name: Build documentation
         run: hatch run docs:build
