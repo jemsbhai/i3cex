@@ -1,0 +1,4 @@
+# Frozen experiment artifacts use canonical LF bytes on every platform so
+# their committed SHA-256 sidecars remain reproducible.
+experiments/extensibility/*.json text eol=lf
+experiments/extensibility/*.sha256 text eol=lf

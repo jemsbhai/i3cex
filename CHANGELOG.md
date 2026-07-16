@@ -29,6 +29,8 @@ bump the `MINOR` component.
   boundary models, deterministic implementation order, and a SHA-256 sidecar.
 - Standard-library manifest validator, JSON Schema, unit tests, Hatch command,
   and CI validation step.
+- Canonical LF checkout rules and a regression test keep the byte-exact
+  manifest hash reproducible on Windows, Linux, and macOS.
 
 #### Standalone repository and standards alignment
 

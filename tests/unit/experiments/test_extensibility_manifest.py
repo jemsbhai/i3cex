@@ -34,6 +34,14 @@ def test_manifest_sha256_sidecar_matches() -> None:
 
 
 @pytest.mark.unit
+def test_manifest_uses_canonical_lf_line_endings() -> None:
+    manifest_bytes = DEFAULT_MANIFEST.read_bytes()
+
+    assert b"\r\n" not in manifest_bytes
+    assert manifest_bytes.endswith(b"\n")
+
+
+@pytest.mark.unit
 def test_core_matrix_contains_192_logical_cells(manifest: dict[str, Any]) -> None:
     calculated = (
         len(manifest["scenarios"])
