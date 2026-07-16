@@ -337,6 +337,10 @@ without implying MIPI affiliation or modifying the base protocol. See ADR-0015.
 - All work is pre-registered via specification drafts in `specs/`
   before implementation begins. This creates an immutable record of
   the research hypothesis and design.
+- Labeled benchmark measurements begin only after the applicable methodology
+  ADRs are accepted and a machine-readable experiment manifest is committed.
+  Pilot measurements are labeled exploratory and are never pooled with the
+  registered result set.
 - Negative results are reported. If preamble framing loses to TLV,
   we publish that. If I3C-EX sublayer X turns out to be unnecessary,
   we publish that.
