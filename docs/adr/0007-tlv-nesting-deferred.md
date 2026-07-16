@@ -138,7 +138,7 @@ reject 0xFE.
 
 ## References
 
-- `../../../specs/I3CEX-0.1.0-draft.md` section 5.2 — TLV framing
+- `../../specs/I3CEX-0.1.0-draft.md` section 5.2 — TLV framing
   (updated in the same commit as this ADR).
 - [`./0002-framing-comparative-prototyping.md`](./0002-framing-comparative-prototyping.md)
   — parent decision establishing the framing bakeoff.

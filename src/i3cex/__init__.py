@@ -1,4 +1,4 @@
-"""i3cex: extension layers for MIPI I3C targeting edge AI and edge ML workloads.
+"""Independent research content protocol for MIPI I3C Basic v1.2.
 
 This package implements the I3C-EX protocol extension layers defined in the
 repository's ``specs/I3CEX-*.md`` specifications.
@@ -24,7 +24,7 @@ specification.
 
 from __future__ import annotations
 
-__version__ = "0.1.0.dev0"
+__version__ = "0.2.0.dev0"
 """Package version.
 
 Exported at the package root so Hatch can read it via

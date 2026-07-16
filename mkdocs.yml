@@ -1,0 +1,27 @@
+site_name: I3C-EX
+site_description: Independent research content protocol for I3C Basic v1.2
+repo_url: https://github.com/jemsbhai/i3cex
+theme:
+  name: material
+nav:
+  - Home: index.md
+  - Standards alignment: standards/I3C_BASIC_V1_2_ALIGNMENT.md
+  - Architecture decisions:
+      - Index: adr/README.md
+      - ADR-0001 Dual-track architecture: adr/0001-dual-track-architecture.md
+      - ADR-0002 Comparative framing: adr/0002-framing-comparative-prototyping.md
+      - ADR-0003 Hybrid simulation: adr/0003-simulation-hybrid-stack.md
+      - ADR-0004 Hatch packaging: adr/0004-hatch-over-poetry.md
+      - ADR-0005 Preamble format: adr/0005-preamble-wire-format.md
+      - ADR-0006 TLV length: adr/0006-tlv-length-encoding.md
+      - ADR-0007 TLV nesting: adr/0007-tlv-nesting-deferred.md
+      - ADR-0008 TLV block size: adr/0008-tlv-max-block-size.md
+      - ADR-0009 Efficiency principle: adr/0009-efficiency-principle.md
+      - ADR-0010 Bakeoff methodology: adr/0010-bakeoff-evaluation-methodology.md
+      - ADR-0015 Standards alignment: adr/0015-i3c-basic-v1.2-standards-alignment.md
+      - ADR template: adr/TEMPLATE.md
+markdown_extensions:
+  - tables
+  - toc:
+      permalink: true
+strict: true

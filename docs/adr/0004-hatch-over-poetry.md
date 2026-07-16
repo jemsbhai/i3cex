@@ -88,7 +88,7 @@ maintenance trajectory than Poetry.
 
 ## References
 
-- `../../../GOVERNANCE.md` — packaging decision log entry.
+- `../../GOVERNANCE.md` — packaging decision log entry.
 - [Hatch documentation](https://hatch.pypa.io/)
 - [PyPA Packaging User Guide](https://packaging.python.org/)
 - [PEP 621](https://peps.python.org/pep-0621/) — standard project

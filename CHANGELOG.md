@@ -12,6 +12,18 @@ bump the `MINOR` component.
 
 ### Added
 
+#### Standalone repository and standards alignment
+
+- Standalone `i3cex` repository retaining the original I3C-EX history.
+- I3CEX-0.2.0-draft, aligned as an independent content protocol for MIPI I3C
+  Basic v1.2 plus published errata.
+- ADR-0015 and a normative alignment policy covering SETBUSCON context gating,
+  directed capability discovery, Private SDR transport, SETMRL/SETMWL limits,
+  registered MDB use, and separate base/I3C-EX conformance claims.
+- Public notice clarifying independence, marks, licensing, and certification
+  boundaries.
+- MkDocs configuration and standards-alignment documentation.
+
 #### Scaffolding
 
 - Initial package scaffold following Hatch / PEP 517 conventions.
@@ -97,6 +109,12 @@ bump the `MINOR` component.
   and encoder/decoder rejection invariants.
 
 ### Changed
+
+- Package development version advanced to `0.2.0.dev0`.
+- Repository links, documentation paths, packaging contents, and CI now target
+  the standalone `jemsbhai/i3cex` layout.
+- The 4096-byte TLV default is explicitly subordinate to the applicable
+  SETMRL/SETMWL-derived Private SDR content budget.
 
 - Coverage floor (`--cov-fail-under`) ratchet progression:
   - 0 -> 60 after initial preamble implementation.

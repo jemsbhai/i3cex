@@ -148,7 +148,7 @@ ADR-0007; see that ADR for details.)
 
 ## References
 
-- `../../../specs/I3CEX-0.1.0-draft.md` section 5.2 — TLV framing
+- `../../specs/I3CEX-0.1.0-draft.md` section 5.2 — TLV framing
   (updated in the same commit as this ADR).
 - [`./0002-framing-comparative-prototyping.md`](./0002-framing-comparative-prototyping.md)
   — parent decision establishing the framing bakeoff.
@@ -156,5 +156,5 @@ ADR-0007; see that ADR for details.)
   — precedent for reserved-bit forward-compatibility discipline.
 - [`./0007-tlv-nesting-deferred.md`](./0007-tlv-nesting-deferred.md)
   — Type-value reservation policy for containers.
-- [`../../../../i3cex/src/i3cex/framing/tlv.py`](../../../../i3cex/src/i3cex/framing/tlv.py)
+- [Reference implementation](https://github.com/jemsbhai/i3cex/blob/main/src/i3cex/framing/tlv.py)
   — reference implementation.

@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "i3cex"
 dynamic = ["version"]
-description = "I3C-EX: Extension layers for MIPI I3C targeting edge AI and edge ML workloads."
+description = "Independent research content protocol for edge AI/ML over MIPI I3C Basic v1.2."
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.11"
@@ -65,10 +65,10 @@ docs = [
 ]
 
 [project.urls]
-Repository = "https://github.com/USER/i3cex"  # TODO: update when published
-Specification = "https://github.com/USER/i3cex/tree/main/../specs"
-Issues = "https://github.com/USER/i3cex/issues"
-Changelog = "https://github.com/USER/i3cex/blob/main/CHANGELOG.md"
+Repository = "https://github.com/jemsbhai/i3cex"
+Specification = "https://github.com/jemsbhai/i3cex/blob/main/specs/I3CEX-0.2.0-draft.md"
+Issues = "https://github.com/jemsbhai/i3cex/issues"
+Changelog = "https://github.com/jemsbhai/i3cex/blob/main/CHANGELOG.md"
 
 [tool.hatch.version]
 path = "src/i3cex/__init__.py"
@@ -83,7 +83,12 @@ include = [
     "scripts",
     "README.md",
     "LICENSE",
+    "NOTICE.md",
     "CHANGELOG.md",
+    "GOVERNANCE.md",
+    "mkdocs.yml",
+    "docs",
+    "specs",
     "pyproject.toml",
 ]
 

@@ -67,6 +67,9 @@ venv.bak/
 # Hatch
 .hatch/
 
+# Generated documentation
+site/
+
 # IDEs
 .idea/
 .vscode/

@@ -178,7 +178,7 @@ to prevent accidental re-adoption:
 
 ## References
 
-- `../../../GOVERNANCE.md` — normative Efficiency Principle section
+- `../../GOVERNANCE.md` — normative Efficiency Principle section
   (added in the same commit as this ADR).
 - [`./0006-tlv-length-encoding.md`](./0006-tlv-length-encoding.md)
   — decision that applied the "no added decoder complexity"

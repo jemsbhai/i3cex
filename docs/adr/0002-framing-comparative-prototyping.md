@@ -86,8 +86,8 @@ the comparison produces its own research contribution.
 
 ## References
 
-- `../../../specs/I3CEX-0.1.0-draft.md` section 5 — framing comparison
+- `../../specs/I3CEX-0.1.0-draft.md` section 5 — framing comparison
   criteria.
-- `../../../GOVERNANCE.md` — decision log entry for framing strategy.
-- `../../../../i3cex/src/i3cex/framing/preamble.py` — Candidate A.
-- `../../../../i3cex/src/i3cex/framing/tlv.py` — Candidate B.
+- `../../GOVERNANCE.md` — decision log entry for framing strategy.
+- `../../src/i3cex/framing/preamble.py` — Candidate A.
+- `../../src/i3cex/framing/tlv.py` — Candidate B.

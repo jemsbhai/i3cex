@@ -101,7 +101,7 @@ taught us.
 
 ## References
 
-- `../../../README.md` — project overview.
-- `../../../GOVERNANCE.md` — decision log entry for dual-track architecture.
-- `../../../specs/I3CEX-0.1.0-draft.md` — draft specification.
-- `../../../specs/I4C-0.0.1-placeholder.md` — I4C placeholder.
+- `../../README.md` — project overview.
+- `../../GOVERNANCE.md` — decision log entry for dual-track architecture.
+- `../../specs/I3CEX-0.1.0-draft.md` — original draft specification.
+- [Historical I4C placeholder](https://github.com/jemsbhai/i3cex-i4c/blob/main/specs/I4C-0.0.1-placeholder.md).

@@ -93,7 +93,7 @@ The three layers:
 
 ## References
 
-- `../../../GOVERNANCE.md` — simulation strategy decision log entry.
+- `../../GOVERNANCE.md` — simulation strategy decision log entry.
 - [chipsalliance/i3c-core](https://github.com/chipsalliance/i3c-core) —
   Apache-2.0 reference RTL.
 - Open-Source FPGA Implementation of an I3C Controller, MDPI 2025.

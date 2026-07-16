@@ -159,9 +159,9 @@ cannot represent faithfully.
 
 ## References
 
-- `../../../specs/I3CEX-0.1.0-draft.md` section 5.1 — Option A bit
+- `../../specs/I3CEX-0.1.0-draft.md` section 5.1 — Option A bit
   layout (updated in the same commit as this ADR).
 - [`./0002-framing-comparative-prototyping.md`](./0002-framing-comparative-prototyping.md)
   — parent decision establishing the framing bakeoff.
-- [`../../../../i3cex/src/i3cex/framing/preamble.py`](../../../../i3cex/src/i3cex/framing/preamble.py)
+- [Reference implementation](https://github.com/jemsbhai/i3cex/blob/main/src/i3cex/framing/preamble.py)
   — reference implementation.

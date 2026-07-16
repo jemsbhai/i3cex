@@ -162,13 +162,13 @@ justification; they are not accepted as self-evident.
 
 ## References
 
-- `../../../specs/I3CEX-0.1.0-draft.md` section 5.3 — six axes of
+- `../../specs/I3CEX-0.1.0-draft.md` section 5.3 — six axes of
   framing comparison.
 - `./0002-framing-comparative-prototyping.md` — commitment to
   comparative prototyping.
 - `./0009-efficiency-principle.md` — normative Efficiency Principle
   that shapes some axis 1 and axis 2 measurements.
-- `../../../GOVERNANCE.md` — project-level decision log.
+- `../../GOVERNANCE.md` — project-level decision log.
 - ADR-0011 (forthcoming) — Python-plus-C side-by-side measurement
   rule.
 - ADR-0012, ADR-0013, ADR-0014 (forthcoming) — axis 3 methodology.

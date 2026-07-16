@@ -174,12 +174,12 @@ justification for adopting 3d over the simpler 3c.
 
 ## References
 
-- `../../../specs/I3CEX-0.1.0-draft.md` section 5.2.3 — TLV maximum
+- `../../specs/I3CEX-0.1.0-draft.md` section 5.2.3 — TLV maximum
   block size and negotiation.
 - [`./0006-tlv-length-encoding.md`](./0006-tlv-length-encoding.md)
   — per-record length cap.
 - [`./0009-efficiency-principle.md`](./0009-efficiency-principle.md)
   — efficiency principle under which this decision's latency
   analysis was conducted.
-- [`../../../../i3cex/src/i3cex/framing/tlv.py`](../../../../i3cex/src/i3cex/framing/tlv.py)
+- [Reference implementation](https://github.com/jemsbhai/i3cex/blob/main/src/i3cex/framing/tlv.py)
   — reference implementation.
