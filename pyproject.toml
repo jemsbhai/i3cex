@@ -88,6 +88,7 @@ include = [
     "GOVERNANCE.md",
     "mkdocs.yml",
     "docs",
+    "experiments",
     "specs",
     "pyproject.toml",
 ]
@@ -129,11 +130,15 @@ fix = [
 # Strict type checking.
 typecheck = "mypy --strict src tests scripts"
 
+# Validate the frozen experiment manifest and its byte-exact hash.
+validate-manifest = "python scripts/validate_extensibility_manifest.py"
+
 # Everything: lint + typecheck + full non-cosim test run with coverage.
 check = [
     "ruff check src tests scripts",
     "ruff format --check src tests scripts",
     "mypy --strict src tests scripts",
+    "python scripts/validate_extensibility_manifest.py",
     "python scripts/run_pytest.py --markers \"not cosim\" --cov-report=term-missing",
 ]
 

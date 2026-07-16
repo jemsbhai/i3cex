@@ -1,0 +1,291 @@
+{
+  "$schema": "./manifest-v1.schema.json",
+  "schema_version": "1.0.0",
+  "manifest_id": "i3cex-extensibility-v1",
+  "status": "frozen_preimplementation",
+  "created": "2026-07-16",
+  "specification": "I3CEX-0.2.0-draft",
+  "baseline_commit": "fc571dd5c1c105b868235eae1ec77ffeb751c858",
+  "labeled_measurements_enabled": false,
+  "blocking_requirements": [
+    "Accept axis 1 wire-overhead methodology",
+    "Accept axis 2 parse-complexity methodology",
+    "Accept axis 4 legacy-safety methodology",
+    "Accept axis 5 worst-case-latency methodology",
+    "Accept axis 6 throughput methodology"
+  ],
+  "methodology_adrs": [
+    {
+      "id": "ADR-0011",
+      "status": "accepted",
+      "path": "docs/adr/0011-python-c-side-by-side-measurement.md"
+    },
+    {
+      "id": "ADR-0012",
+      "status": "accepted",
+      "path": "docs/adr/0012-extensibility-scenario-taxonomy.md"
+    },
+    {
+      "id": "ADR-0013",
+      "status": "accepted",
+      "path": "docs/adr/0013-extensibility-coverage-strategy.md"
+    },
+    {
+      "id": "ADR-0014",
+      "status": "accepted",
+      "path": "docs/adr/0014-extensibility-per-scenario-measurements.md"
+    }
+  ],
+  "master_seed": 20260716,
+  "implementation_order_algorithm": "xorshift32_fisher_yates_alternating_v1",
+  "implementation_order": [
+    {"position": 1, "scenario": "X08", "first_candidate": "preamble"},
+    {"position": 2, "scenario": "X10", "first_candidate": "tlv"},
+    {"position": 3, "scenario": "X02", "first_candidate": "preamble"},
+    {"position": 4, "scenario": "X11", "first_candidate": "tlv"},
+    {"position": 5, "scenario": "X04", "first_candidate": "preamble"},
+    {"position": 6, "scenario": "X05", "first_candidate": "tlv"},
+    {"position": 7, "scenario": "X07", "first_candidate": "preamble"},
+    {"position": 8, "scenario": "X12", "first_candidate": "tlv"},
+    {"position": 9, "scenario": "X01", "first_candidate": "preamble"},
+    {"position": 10, "scenario": "X06", "first_candidate": "tlv"},
+    {"position": 11, "scenario": "X03", "first_candidate": "preamble"},
+    {"position": 12, "scenario": "X09", "first_candidate": "tlv"}
+  ],
+  "candidates": ["preamble", "tlv"],
+  "version_pairings": [
+    {"id": "B_TO_B", "sender": "baseline", "receiver": "baseline"},
+    {"id": "B_TO_E", "sender": "baseline", "receiver": "extended"},
+    {"id": "E_TO_B", "sender": "extended", "receiver": "baseline"},
+    {"id": "E_TO_E", "sender": "extended", "receiver": "extended"}
+  ],
+  "directions": [
+    {"id": "controller_to_target", "budget_source": "SETMWL"},
+    {"id": "target_to_controller", "budget_source": "SETMRL"}
+  ],
+  "expected_core_cells": 192,
+  "safe_outcomes": [
+    "FULL",
+    "BASELINE_ONLY",
+    "SAFE_IGNORE",
+    "SAFE_REJECT",
+    "NEGOTIATED_FALLBACK"
+  ],
+  "nonpassing_outcomes": [
+    "UNSUPPORTED",
+    "INFEASIBLE_BASE_BUDGET",
+    "IMPLEMENTATION_FAILED"
+  ],
+  "unsafe_outcomes": [
+    "UNSAFE_ACCEPT",
+    "DESYNCHRONIZED",
+    "UNBOUNDED_RESOURCE",
+    "MEMORY_SAFETY_FAILURE"
+  ],
+  "coverage_requirements": {
+    "core_cell_coverage_percent": 100,
+    "boundary_coverage_percent": 100,
+    "valid_two_way_nuisance_coverage_percent": 100,
+    "summary_records_per_core_cell": 1
+  },
+  "nuisance_factors": [
+    {"id": "extension_position", "levels": ["first", "middle", "last"]},
+    {"id": "known_element_count", "levels": [0, 1, 3]},
+    {"id": "unknown_optional_element_count", "levels": [0, 1, 3]},
+    {
+      "id": "value_content_pattern",
+      "levels": ["all_zero", "all_one", "alternating", "deterministic_random"]
+    },
+    {
+      "id": "directional_budget_slack",
+      "levels": ["exact_fit", "one_byte_spare", "at_least_25_percent_spare"]
+    },
+    {"id": "same_extension_repetition", "levels": [1, 2, "maximum_permitted"]},
+    {
+      "id": "neighbor_relation",
+      "levels": ["known_known", "known_unknown", "unknown_known"]
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "X01",
+      "title": "Add the next monotonic sublayer after EX-6",
+      "requirement_level": "negotiated",
+      "e_to_b_expected": "NEGOTIATED_FALLBACK",
+      "semantic_fixture": {
+        "baseline": {"active_sublayers": ["EX-1", "EX-2", "EX-3", "EX-4", "EX-5", "EX-6"]},
+        "extension": {"active_sublayers": ["EX-1", "EX-2", "EX-3", "EX-4", "EX-5", "EX-6", "EX-7"]},
+        "expected": {"active_sublayers_include": "EX-7", "baseline_meanings_unchanged": true}
+      },
+      "boundary_field": "capability_level",
+      "boundary_values": [0, 1, 5, 6, 7, 8],
+      "semantic_payload_bytes": {"minimum": 1, "typical": 16, "boundary": 64},
+      "directional_content_budget_bytes": {"controller_to_target": 128, "target_to_controller": 128}
+    },
+    {
+      "id": "X02",
+      "title": "Activate a sparse sublayer set",
+      "requirement_level": "negotiated",
+      "e_to_b_expected": "NEGOTIATED_FALLBACK",
+      "semantic_fixture": {
+        "baseline": {"active_sublayers": ["EX-1"]},
+        "extension": {"active_sublayers": ["EX-1", "EX-4"]},
+        "expected": {"active_sublayers_exact": ["EX-1", "EX-4"], "must_not_imply": ["EX-2", "EX-3"]}
+      },
+      "boundary_field": "active_sublayer_count",
+      "boundary_values": [0, 1, 2, 5, 6, 7],
+      "semantic_payload_bytes": {"minimum": 1, "typical": 16, "boundary": 64},
+      "directional_content_budget_bytes": {"controller_to_target": 128, "target_to_controller": 128}
+    },
+    {
+      "id": "X03",
+      "title": "Add an optional record subtype inside EX-1",
+      "requirement_level": "optional",
+      "e_to_b_expected": "SAFE_IGNORE",
+      "semantic_fixture": {
+        "baseline": {"records": [{"kind": "sequence", "value": 1}]},
+        "extension": {"records": [{"kind": "sequence", "value": 1}, {"kind": "model_epoch", "value": 7}]},
+        "expected": {"known_record_preserved": true, "unknown_record_ignorable": true}
+      },
+      "boundary_field": "record_subtype_ordinal",
+      "boundary_values": [0, 1, 14, 15, 16, 17],
+      "semantic_payload_bytes": {"minimum": 0, "typical": 16, "boundary": 127},
+      "directional_content_budget_bytes": {"controller_to_target": 256, "target_to_controller": 256}
+    },
+    {
+      "id": "X04",
+      "title": "Add a critical record subtype inside EX-1",
+      "requirement_level": "critical",
+      "e_to_b_expected": "SAFE_REJECT",
+      "semantic_fixture": {
+        "baseline": {"records": [{"kind": "sequence", "value": 1}]},
+        "extension": {"records": [{"kind": "schema_digest", "value_hex": "0011223344556677"}]},
+        "expected": {"critical_record_required_for_interpretation": true, "partial_delivery_forbidden": true}
+      },
+      "boundary_field": "record_subtype_ordinal",
+      "boundary_values": [0, 1, 14, 15, 16, 17],
+      "semantic_payload_bytes": {"minimum": 1, "typical": 16, "boundary": 127},
+      "directional_content_budget_bytes": {"controller_to_target": 256, "target_to_controller": 256}
+    },
+    {
+      "id": "X05",
+      "title": "Append an optional field to a known EX-1 record",
+      "requirement_level": "optional",
+      "e_to_b_expected": "BASELINE_ONLY",
+      "semantic_fixture": {
+        "baseline": {"sequence": 1, "timestamp": 1000},
+        "extension": {"sequence": 1, "timestamp": 1000, "calibration_generation": 3},
+        "expected": {"common_prefix_unambiguous": true, "baseline_fields_preserved": true}
+      },
+      "boundary_field": "record_field_count",
+      "boundary_values": [0, 1, 2, 3, 4, 5],
+      "semantic_payload_bytes": {"minimum": 1, "typical": 24, "boundary": 127},
+      "directional_content_budget_bytes": {"controller_to_target": 256, "target_to_controller": 256}
+    },
+    {
+      "id": "X06",
+      "title": "Mix one known and one unknown optional element",
+      "requirement_level": "optional",
+      "e_to_b_expected": "SAFE_IGNORE",
+      "semantic_fixture": {
+        "baseline": {"records": [{"kind": "sequence", "value": 1}]},
+        "extension": {"records": [{"kind": "sequence", "value": 1}, {"kind": "unknown_optional", "value_hex": "a55a"}]},
+        "expected": {"known_record_preserved": true, "next_boundary_synchronized": true}
+      },
+      "boundary_field": "unknown_optional_element_count",
+      "boundary_values": [0, 1, 2, 3, 4],
+      "semantic_payload_bytes": {"minimum": 0, "typical": 32, "boundary": 127},
+      "directional_content_budget_bytes": {"controller_to_target": 256, "target_to_controller": 256}
+    },
+    {
+      "id": "X07",
+      "title": "Grow one value from 127 to 128 bytes",
+      "requirement_level": "negotiated",
+      "e_to_b_expected": "NEGOTIATED_FALLBACK",
+      "semantic_fixture": {
+        "baseline": {"value_length_bytes": 127},
+        "extension": {"value_length_bytes": 128},
+        "expected": {"value_bytes_roundtrip_exactly": true, "length_unambiguous": true}
+      },
+      "boundary_field": "value_length_bytes",
+      "boundary_values": [0, 1, 126, 127, 128, 255],
+      "semantic_payload_bytes": {"minimum": 0, "typical": 64, "boundary": 128},
+      "directional_content_budget_bytes": {"controller_to_target": 512, "target_to_controller": 512}
+    },
+    {
+      "id": "X08",
+      "title": "Grow one content block from 4096 to 4097 bytes",
+      "requirement_level": "negotiated",
+      "e_to_b_expected": "NEGOTIATED_FALLBACK",
+      "semantic_fixture": {
+        "baseline": {"content_block_bytes": 4096},
+        "extension": {"content_block_bytes": 4097},
+        "expected": {"content_bytes_roundtrip_exactly": true, "base_budget_still_authoritative": true}
+      },
+      "boundary_field": "content_block_bytes",
+      "boundary_values": [0, 1, 4095, 4096, 4097, 8192],
+      "semantic_payload_bytes": {"minimum": 0, "typical": 4096, "boundary": 4097},
+      "directional_content_budget_bytes": {"controller_to_target": 8192, "target_to_controller": 8192}
+    },
+    {
+      "id": "X09",
+      "title": "Represent one parent with two child elements",
+      "requirement_level": "negotiated",
+      "e_to_b_expected": "NEGOTIATED_FALLBACK",
+      "semantic_fixture": {
+        "baseline": {"records": [{"kind": "sensor", "id": "sensor_a"}, {"kind": "sensor", "id": "sensor_b"}]},
+        "extension": {"parent": "fusion_group_1", "children": ["sensor_a", "sensor_b"]},
+        "expected": {"parent_association_deterministic": true, "child_boundaries_preserved": true}
+      },
+      "boundary_field": "child_count",
+      "boundary_values": [0, 1, 2, 3, 16],
+      "semantic_payload_bytes": {"minimum": 2, "typical": 32, "boundary": 128},
+      "directional_content_budget_bytes": {"controller_to_target": 256, "target_to_controller": 256}
+    },
+    {
+      "id": "X10",
+      "title": "Carry two independently allocated extensions",
+      "requirement_level": "optional",
+      "e_to_b_expected": "SAFE_IGNORE",
+      "semantic_fixture": {
+        "baseline": {"records": [{"kind": "sequence", "value": 1}]},
+        "extension": {"independent_extensions": ["org_a.temperature_quality", "org_b.calibration_lineage"]},
+        "expected": {"identifier_collision": false, "both_semantics_preserved": true}
+      },
+      "boundary_field": "independent_extension_count",
+      "boundary_values": [0, 1, 2, 3, 16],
+      "semantic_payload_bytes": {"minimum": 2, "typical": 32, "boundary": 128},
+      "directional_content_budget_bytes": {"controller_to_target": 256, "target_to_controller": 256}
+    },
+    {
+      "id": "X11",
+      "title": "Introduce a second framing revision",
+      "requirement_level": "negotiated",
+      "e_to_b_expected": "NEGOTIATED_FALLBACK",
+      "semantic_fixture": {
+        "baseline": {"framing_revision": 1, "records": [{"kind": "sequence", "value": 1}]},
+        "extension": {"framing_revision": 2, "records": [{"kind": "sequence", "value": 1}]},
+        "expected": {"version_pairing_behavior_explicit": true, "baseline_semantics_preserved": true}
+      },
+      "boundary_field": "framing_revision",
+      "boundary_values": [0, 1, 2, 3, 255],
+      "semantic_payload_bytes": {"minimum": 1, "typical": 16, "boundary": 128},
+      "directional_content_budget_bytes": {"controller_to_target": 256, "target_to_controller": 256}
+    },
+    {
+      "id": "X12",
+      "title": "Exhaust the candidate primary extension namespace",
+      "requirement_level": "negotiated",
+      "e_to_b_expected": "NEGOTIATED_FALLBACK",
+      "semantic_fixture": {
+        "baseline": {"namespace_utilization_percent": 100},
+        "extension": {"allocate_one_additional_semantic": true},
+        "expected": {"continuation_path_documented_or_clean_exhaustion": true, "existing_identifiers_unchanged": true}
+      },
+      "boundary_field": "namespace_utilization_percent",
+      "boundary_values": [0, 1, 50, 99, 100, 101],
+      "semantic_payload_bytes": {"minimum": 1, "typical": 16, "boundary": 128},
+      "directional_content_budget_bytes": {"controller_to_target": 256, "target_to_controller": 256}
+    }
+  ]
+}

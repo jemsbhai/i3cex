@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jemsbhai/i3cex/experiments/extensibility/manifest-v1.schema.json",
+  "title": "I3C-EX extensibility experiment manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "manifest_id",
+    "status",
+    "created",
+    "specification",
+    "baseline_commit",
+    "labeled_measurements_enabled",
+    "blocking_requirements",
+    "methodology_adrs",
+    "master_seed",
+    "implementation_order_algorithm",
+    "implementation_order",
+    "candidates",
+    "version_pairings",
+    "directions",
+    "expected_core_cells",
+    "safe_outcomes",
+    "nonpassing_outcomes",
+    "unsafe_outcomes",
+    "coverage_requirements",
+    "nuisance_factors",
+    "scenarios"
+  ],
+  "properties": {
+    "$schema": {"type": "string"},
+    "schema_version": {"const": "1.0.0"},
+    "manifest_id": {"const": "i3cex-extensibility-v1"},
+    "status": {"const": "frozen_preimplementation"},
+    "created": {"type": "string", "format": "date"},
+    "specification": {"const": "I3CEX-0.2.0-draft"},
+    "baseline_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "labeled_measurements_enabled": {"const": false},
+    "blocking_requirements": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "methodology_adrs": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "status", "path"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^ADR-[0-9]{4}$"},
+          "status": {"const": "accepted"},
+          "path": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "master_seed": {"type": "integer", "minimum": 1, "maximum": 4294967295},
+    "implementation_order_algorithm": {"const": "xorshift32_fisher_yates_alternating_v1"},
+    "implementation_order": {
+      "type": "array",
+      "minItems": 12,
+      "maxItems": 12,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["position", "scenario", "first_candidate"],
+        "properties": {
+          "position": {"type": "integer", "minimum": 1, "maximum": 12},
+          "scenario": {"type": "string", "pattern": "^X(0[1-9]|1[0-2])$"},
+          "first_candidate": {"enum": ["preamble", "tlv"]}
+        }
+      }
+    },
+    "candidates": {
+      "type": "array",
+      "prefixItems": [{"const": "preamble"}, {"const": "tlv"}],
+      "items": false
+    },
+    "version_pairings": {"type": "array", "minItems": 4, "maxItems": 4},
+    "directions": {"type": "array", "minItems": 2, "maxItems": 2},
+    "expected_core_cells": {"const": 192},
+    "safe_outcomes": {"type": "array", "minItems": 5, "items": {"type": "string"}},
+    "nonpassing_outcomes": {"type": "array", "minItems": 3, "items": {"type": "string"}},
+    "unsafe_outcomes": {"type": "array", "minItems": 4, "items": {"type": "string"}},
+    "coverage_requirements": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "core_cell_coverage_percent",
+        "boundary_coverage_percent",
+        "valid_two_way_nuisance_coverage_percent",
+        "summary_records_per_core_cell"
+      ],
+      "properties": {
+        "core_cell_coverage_percent": {"const": 100},
+        "boundary_coverage_percent": {"const": 100},
+        "valid_two_way_nuisance_coverage_percent": {"const": 100},
+        "summary_records_per_core_cell": {"const": 1}
+      }
+    },
+    "nuisance_factors": {"type": "array", "minItems": 1},
+    "scenarios": {
+      "type": "array",
+      "minItems": 12,
+      "maxItems": 12,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "title",
+          "requirement_level",
+          "e_to_b_expected",
+          "semantic_fixture",
+          "boundary_field",
+          "boundary_values",
+          "semantic_payload_bytes",
+          "directional_content_budget_bytes"
+        ],
+        "properties": {
+          "id": {"type": "string", "pattern": "^X(0[1-9]|1[0-2])$"},
+          "title": {"type": "string", "minLength": 1},
+          "requirement_level": {"enum": ["optional", "critical", "negotiated"]},
+          "e_to_b_expected": {
+            "enum": ["BASELINE_ONLY", "SAFE_IGNORE", "SAFE_REJECT", "NEGOTIATED_FALLBACK"]
+          },
+          "semantic_fixture": {"type": "object"},
+          "boundary_field": {"type": "string", "minLength": 1},
+          "boundary_values": {
+            "type": "array",
+            "minItems": 4,
+            "uniqueItems": true,
+            "items": {"type": "integer", "minimum": 0}
+          },
+          "semantic_payload_bytes": {
+            "type": "object",
+            "required": ["minimum", "typical", "boundary"]
+          },
+          "directional_content_budget_bytes": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["controller_to_target", "target_to_controller"],
+            "properties": {
+              "controller_to_target": {"type": "integer", "minimum": 1},
+              "target_to_controller": {"type": "integer", "minimum": 1}
+            }
+          }
+        }
+      }
+    }
+  }
+}
