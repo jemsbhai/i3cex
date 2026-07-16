@@ -14,6 +14,17 @@ bump the `MINOR` component.
 
 #### Framing bakeoff methodology
 
+- Proposed ADR-0016: exact wire accounting over a finite workload and boundary
+  grid, with fragmentation and setup amortization kept visible.
+- Proposed ADR-0017: static parser complexity and embedded resource vectors,
+  with generated structure included and no weighted composite score.
+- Proposed ADR-0018: negotiation-state and version-skew safety testing,
+  exhaustive boundary mutation, fixed-run fuzzing with sanitizers, and embedded
+  replay under a non-compensable safety gate.
+- Proposed ADR-0019: separate safe WCET bounds, exhaustive bounded-domain
+  maxima, and sampled maxima, with compute and wire occupancy decomposed.
+- Proposed ADR-0020: exact goodput ceilings and a fixed zero-loss offered-load
+  search for empirical application throughput.
 - Accepted ADR-0011: independent Python and freestanding-C implementations,
   differential correctness gating, paired within-language comparisons, and a
   Cortex-M0 primary runtime endpoint.

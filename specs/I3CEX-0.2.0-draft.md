@@ -505,9 +505,21 @@ Methodology is pre-registered before benchmark implementation:
   measured pairwise coverage of nuisance factors.
 - ADR-0014 defines fixed semantic outcomes, a safety gate, and Pareto
   comparison without a weighted extensibility score.
+- Proposed ADR-0016 defines exact wire-byte accounting over a finite boundary
+  grid, including fragmentation and setup amortization.
+- Proposed ADR-0017 defines a parser-structure and embedded-resource vector
+  without a composite complexity score.
+- Proposed ADR-0018 defines negotiation-state, version-skew, mutation,
+  sanitizer, fixed-run fuzzing, and embedded-replay safety gates.
+- Proposed ADR-0019 distinguishes safe WCET upper bounds, bounded-domain
+  maxima, and sampled maxima while separating compute from wire occupancy.
+- Proposed ADR-0020 defines analytical goodput ceilings and a zero-loss
+  offered-load search for empirical application goodput.
 
-Their machine-readable experiment manifest and the remaining per-axis
-methodology MUST be committed before labeled bakeoff measurements begin.
+The proposed ADRs MUST be reviewed and accepted before they govern labeled
+measurements. After acceptance, a new machine-readable manifest version MUST
+freeze all six axes before the benchmark harness or labeled bakeoff
+measurements begin. The frozen extensibility manifest v1 MUST remain unchanged.
 
 ---
 
