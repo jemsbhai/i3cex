@@ -54,8 +54,10 @@ dev = [
     "pytest-cov>=6.0",
     "pytest-xdist>=3.6",
     "hypothesis>=6.120",
+    "jsonschema>=4.26",
     "ruff>=0.8",
     "mypy>=1.13",
+    "types-jsonschema>=4.26.0.20260518",
     "pre-commit>=4.0",
 ]
 docs = [
@@ -130,8 +132,11 @@ fix = [
 # Strict type checking.
 typecheck = "mypy --strict src tests scripts"
 
-# Validate the frozen experiment manifest and its byte-exact hash.
-validate-manifest = "python scripts/validate_extensibility_manifest.py"
+# Validate both frozen experiment manifests and their byte-exact hashes.
+validate-manifest = [
+    "python scripts/validate_extensibility_manifest.py",
+    "python scripts/validate_bakeoff_manifest.py",
+]
 
 # Everything: lint + typecheck + full non-cosim test run with coverage.
 check = [
@@ -139,6 +144,7 @@ check = [
     "ruff format --check src tests scripts",
     "mypy --strict src tests scripts",
     "python scripts/validate_extensibility_manifest.py",
+    "python scripts/validate_bakeoff_manifest.py",
     "python scripts/run_pytest.py --markers \"not cosim\" --cov-report=term-missing",
 ]
 

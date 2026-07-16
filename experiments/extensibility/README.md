@@ -23,7 +23,9 @@ Validate the freeze with:
 python scripts/validate_extensibility_manifest.py
 ```
 
-The manifest deliberately sets `labeled_measurements_enabled` to `false`.
-The remaining per-axis methodology must be accepted before labeled bakeoff
-measurements begin. Pilot data is exploratory and cannot be pooled with the
+The manifest deliberately sets `labeled_measurements_enabled` to `false` and
+remains an immutable record of the state before the remaining per-axis methods
+were accepted. The all-axis
+[bakeoff manifest v2](../bakeoff/README.md) references its exact SHA-256 rather
+than modifying it. Pilot data is exploratory and cannot be pooled with the
 future registered result set.

@@ -1,0 +1,217 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jemsbhai/i3cex/experiments/bakeoff/manifest-v2.schema.json",
+  "title": "I3C-EX all-axis bakeoff design manifest v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "manifest_id",
+    "status",
+    "created",
+    "specification",
+    "baseline_commit",
+    "labeled_measurements_enabled",
+    "next_required_manifest",
+    "standards_baseline",
+    "extends_manifest",
+    "methodology_adrs",
+    "master_seed",
+    "candidates",
+    "directions",
+    "operations",
+    "shared_workload_grid",
+    "cross_language_runtime",
+    "axes",
+    "analysis_contract",
+    "execution_manifest_requirements"
+  ],
+  "properties": {
+    "$schema": {"const": "./manifest-v2.schema.json"},
+    "schema_version": {"const": "2.0.0"},
+    "manifest_id": {"const": "i3cex-bakeoff-v2"},
+    "status": {"const": "frozen_preimplementation_design"},
+    "created": {"type": "string", "format": "date"},
+    "specification": {"const": "I3CEX-0.2.0-draft"},
+    "baseline_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "labeled_measurements_enabled": {"const": false},
+    "next_required_manifest": {"const": "manifest-v3-execution"},
+    "standards_baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "version",
+        "adopted",
+        "public_baseline_verified",
+        "official_url",
+        "transport_boundary",
+        "identifier_policy",
+        "conformance_claim_policy"
+      ],
+      "properties": {
+        "name": {"const": "MIPI I3C Basic"},
+        "version": {"const": "1.2"},
+        "adopted": {"const": "2025-04-17"},
+        "public_baseline_verified": {"type": "string", "format": "date"},
+        "official_url": {"const": "https://www.mipi.org/specifications/i3c-sensor-specification"},
+        "transport_boundary": {"type": "string", "minLength": 1},
+        "identifier_policy": {"const": "symbolic_or_deliberately_configured_private_only_until_assignment"},
+        "conformance_claim_policy": {"const": "base_i3c_and_i3cex_reported_separately"}
+      }
+    },
+    "extends_manifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "path", "sha256", "expected_core_cells", "mutation_policy"],
+      "properties": {
+        "id": {"const": "i3cex-extensibility-v1"},
+        "path": {"const": "experiments/extensibility/manifest-v1.json"},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "expected_core_cells": {"const": 192},
+        "mutation_policy": {"const": "immutable"}
+      }
+    },
+    "methodology_adrs": {
+      "type": "array",
+      "minItems": 9,
+      "maxItems": 9,
+      "items": {"$ref": "#/$defs/adr"}
+    },
+    "master_seed": {"type": "integer", "minimum": 1, "maximum": 4294967295},
+    "candidates": {
+      "type": "array",
+      "prefixItems": [{"const": "preamble"}, {"const": "tlv"}],
+      "items": false
+    },
+    "directions": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "budget_source"],
+        "properties": {
+          "id": {"enum": ["controller_to_target", "target_to_controller"]},
+          "budget_source": {"enum": ["SETMWL", "SETMRL"]}
+        }
+      }
+    },
+    "operations": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "encode"},
+        {"const": "decode"},
+        {"const": "skip_unknown_optional"},
+        {"const": "reject_invalid"}
+      ],
+      "items": false
+    },
+    "shared_workload_grid": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "capability_levels",
+        "application_value_bytes",
+        "record_counts",
+        "directional_content_budget_bytes",
+        "session_lengths",
+        "boundary_rule",
+        "cell_policy",
+        "expected_candidate_direction_cells"
+      ],
+      "properties": {
+        "capability_levels": {"$ref": "#/$defs/nonempty_unique_integer_array"},
+        "application_value_bytes": {"$ref": "#/$defs/nonempty_unique_integer_array"},
+        "record_counts": {"$ref": "#/$defs/nonempty_unique_integer_array"},
+        "directional_content_budget_bytes": {"$ref": "#/$defs/nonempty_unique_integer_array"},
+        "session_lengths": {"$ref": "#/$defs/nonempty_unique_integer_array"},
+        "boundary_rule": {"type": "string", "minLength": 1},
+        "cell_policy": {"type": "string", "minLength": 1},
+        "expected_candidate_direction_cells": {"const": 84240}
+      }
+    },
+    "cross_language_runtime": {"type": "object", "required": ["semantic_gate", "c", "python", "repetitions"]},
+    "axes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "axis_1_wire_overhead",
+        "axis_2_parse_complexity",
+        "axis_3_extensibility",
+        "axis_4_legacy_safety",
+        "axis_5_bounded_worst_case_latency",
+        "axis_6_throughput"
+      ],
+      "properties": {
+        "axis_1_wire_overhead": {"type": "object", "required": ["adr", "method", "primary_components", "derived_metrics", "grid_reference"]},
+        "axis_2_parse_complexity": {"type": "object", "required": ["adr", "primary_language", "source_metrics", "embedded_metrics", "composite_score_allowed"]},
+        "axis_3_extensibility": {"type": "object", "required": ["adrs", "manifest_reference", "expected_core_cells", "core_cell_coverage_percent"]},
+        "axis_4_legacy_safety": {"type": "object", "required": ["adr", "peer_classes", "deterministic_mutations", "python_property_campaign", "c_fuzz_campaign", "unsafe_tolerance"]},
+        "axis_5_bounded_worst_case_latency": {"type": "object", "required": ["adr", "claim_labels", "decomposition", "sampled_maximum_may_be_called_wcet"]},
+        "axis_6_throughput": {"type": "object", "required": ["adr", "primary_metric", "analytical_ceiling_required_for_every_valid_cell", "empirical_search"]}
+      }
+    },
+    "analysis_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "primary_contrast",
+        "confidence_level_percent",
+        "interval_method",
+        "safety_gate_noncompensable",
+        "decision_rule",
+        "weighted_scores_allowed",
+        "python_to_c_speed_ratio_selects_candidate",
+        "negative_results_reported"
+      ],
+      "properties": {
+        "primary_contrast": {"type": "string", "minLength": 1},
+        "confidence_level_percent": {"const": 99},
+        "interval_method": {"const": "hierarchical_bootstrap_over_independent_blocks"},
+        "safety_gate_noncompensable": {"const": true},
+        "decision_rule": {"const": "pareto_dominance_with_crossovers_and_no_unique_winner_reported"},
+        "weighted_scores_allowed": {"const": false},
+        "python_to_c_speed_ratio_selects_candidate": {"const": false},
+        "negative_results_reported": {"const": true}
+      }
+    },
+    "execution_manifest_requirements": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "required_before_labeled_measurements",
+        "must_pin",
+        "pilot_policy",
+        "candidate_labels_blinded_during_pilot",
+        "may_modify_manifest_v2"
+      ],
+      "properties": {
+        "required_before_labeled_measurements": {"const": true},
+        "must_pin": {"type": "array", "minItems": 8, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "pilot_policy": {"const": "unlabeled_fixed_scope_not_pooled_with_registered_results"},
+        "candidate_labels_blinded_during_pilot": {"const": true},
+        "may_modify_manifest_v2": {"const": false}
+      }
+    }
+  },
+  "$defs": {
+    "adr": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "status", "path"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^ADR-[0-9]{4}$"},
+        "status": {"const": "accepted"},
+        "path": {"type": "string", "minLength": 1}
+      }
+    },
+    "nonempty_unique_integer_array": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "integer", "minimum": 0}
+    }
+  }
+}

@@ -516,9 +516,13 @@ Methodology is pre-registered before benchmark implementation:
 - ADR-0020 defines analytical goodput ceilings and a zero-loss
   offered-load search for empirical application goodput.
 
-A new machine-readable manifest version MUST freeze all six axes before the
-benchmark harness or labeled bakeoff measurements begin. The frozen
-extensibility manifest v1 MUST remain unchanged.
+Machine-readable bakeoff manifest v2 freezes all six axes before benchmark
+implementation and references the exact immutable extensibility manifest v1.
+It keeps labeled measurements disabled. A separate execution manifest MUST pin
+the physical inventory, exact tool binaries and hashes, base timing profiles,
+corpora, and settings selected by the permitted unlabeled pilot before any
+labeled bakeoff observation is collected. Frozen manifest v1 and v2 bytes MUST
+remain unchanged.
 
 ---
 

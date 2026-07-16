@@ -14,6 +14,13 @@ bump the `MINOR` component.
 
 #### Framing bakeoff methodology
 
+- Frozen all-axis `manifest-v2.json` with an 84,240-cell shared workload grid,
+  exact v1 lineage, fixed runtime and safety campaigns, latency claim labels,
+  goodput search, Pareto rule, and a separate execution-manifest gate before
+  labeled measurements.
+- JSON Schema, byte-exact SHA-256 sidecar, semantic validator, regression tests,
+  CI integration, and canonical cross-platform line-ending rules for manifest
+  v2.
 - Accepted ADR-0016: exact wire accounting over a finite workload and boundary
   grid, with fragmentation and setup amortization kept visible.
 - Accepted ADR-0017: static parser complexity and embedded resource vectors,
