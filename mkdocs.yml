@@ -23,6 +23,11 @@ nav:
       - ADR-0013 Extensibility coverage: adr/0013-extensibility-coverage-strategy.md
       - ADR-0014 Extensibility measurements: adr/0014-extensibility-per-scenario-measurements.md
       - ADR-0015 Standards alignment: adr/0015-i3c-basic-v1.2-standards-alignment.md
+      - ADR-0016 Wire overhead: adr/0016-wire-overhead-methodology.md
+      - ADR-0017 Parse complexity: adr/0017-parse-complexity-methodology.md
+      - ADR-0018 Legacy safety: adr/0018-legacy-safety-methodology.md
+      - ADR-0019 Bounded worst-case latency: adr/0019-bounded-worst-case-latency-methodology.md
+      - ADR-0020 Throughput impact: adr/0020-throughput-impact-methodology.md
       - ADR template: adr/TEMPLATE.md
 markdown_extensions:
   - tables

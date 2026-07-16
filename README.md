@@ -53,9 +53,12 @@ specific possibility, not a universal compatibility claim.
 The first milestone is a framing bakeoff, using the pre-registered methodology
 in [ADR-0010](./docs/adr/0010-bakeoff-evaluation-methodology.md). Accepted
 ADR-0011 through ADR-0014 define cross-language runtime measurement and the
-extensibility taxonomy, coverage, outcomes, and decision rule. Only after the
-remaining methodology family and machine-readable experiment manifest are
-frozen will the benchmark harness be implemented.
+extensibility taxonomy, coverage, outcomes, and decision rule. Accepted
+ADR-0016 through ADR-0020 define exact wire accounting, static parser
+complexity, legacy safety, bounded worst-case latency, and application
+goodput. A new machine-readable manifest version will now freeze all six axes
+before the benchmark harness or labeled measurements begin. The existing
+manifest v1 remains an immutable extensibility-only preregistration record.
 
 Proposed sublayers are developed sequentially:
 

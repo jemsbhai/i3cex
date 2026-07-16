@@ -343,6 +343,20 @@ and Pareto comparison without a weighted score.
 **Rationale**: The methodology freezes research-critical choices before a
 benchmark harness or labeled measurements can reveal candidate behavior.
 
+### 2026-07-16: Remaining framing-bakeoff methodology
+
+**Decision**: Accept ADR-0016 through ADR-0020. Wire overhead uses exact
+finite-grid accounting; parse complexity uses a structural and embedded-
+resource vector; legacy safety uses stateful mutation, fixed-run fuzzing,
+sanitizers, and target replay; latency distinguishes safe WCET bounds from
+bounded-domain and sampled maxima; and throughput measures application goodput
+with a zero-loss offered-load search. Safety failures remain non-compensable,
+and no axis uses a weighted score to force a winner.
+
+**Rationale**: Accepting the complete six-axis methodology before manifest v2
+or benchmark implementation preserves preregistration, candidate neutrality,
+and the I3C Basic v1.2 standards boundary.
+
 ## Publication Ethics
 
 - All work is pre-registered via specification drafts in `specs/`
